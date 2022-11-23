@@ -3,6 +3,9 @@ from . models import *
 from account.models import *
 from django.db.models import Q
 from django.contrib import messages
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.core.mail import EmailMultiAlternatives,send_mail,EmailMessage
 # Create your views here.
 
 
@@ -89,15 +92,16 @@ def create_meeting(request):
         interviewer_id = request.POST.get('interview_id')
         # print(User.objects.filter(id=interviewer_id).values('email'))
         interviewer = User.objects.get(id=interviewer_id)
-        # validationd=
-        # error_message = None
 
-        # if(not name):
-        #     error_message = "Name is required !!"
-        # elif not email:
-        #     error_message = "Email is required"
-    
+        Subject = f'Invitation for an interview with visiontrek for position of {domain}'
 
+        html_content = render_to_string('email.html',{'first_name':first_name,"last_name":last_name,'datetime':date,'domain':domain,'position':position})
+
+        msg = EmailMultiAlternatives(Subject,'text_content', 'sajal89304@gmail.com', [email])
+
+        msg.attach_alternative(html_content, "text/html")
+        # msg.attach(user_cv.name,user_cv.read(),user_cv.content_type)
+        msg.send()
         
         if Interview_meeting.objects.filter(Q(email=email) | Q(phone=phone)).exists():
             attempt = "2nd attempt"
