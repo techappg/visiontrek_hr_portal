@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary" role="alert">
+  {{message}}
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+    <div class="card-header">
+        <h3 class="card-title">Create Interview</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6 col-md-6">
+                <div class="form-group">
+                    <label class="form-label">First Name <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" placeholder="First name" name="fname" required >
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Last Name <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" placeholder="Last name" name="lname" required >
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Email address <span class="text-red">*</span></label>
+                    <input type="email" class="form-control" placeholder="Email" name="Email"required >
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Date and Time <span class="text-red">*</span></label>
+                    <input type="datetime-local" class="form-control" placeholder="Date time" name="datetime" required >
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Domain Applied for <span class="text-red">*</span></label>
+                    <select class="form-control form-select select2" data-bs-placeholder="Select" name="domain_id" >
+                        <option value="" selected>Select Domain</option>
+            
+                        {%  for i in domain %}
+                          <option value="{{i.id}}">{{i.name}}</option>
+                  
+                          {% endfor %}
+                          
+                        </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Position Applied for <span class="text-red">*</span></label>
+                    <select class="form-control form-select select2" data-bs-placeholder="Select" name="position" >
+                        <option selected>Select Position</option>
+                
+                        {%  for i in pos %}
+                          <option value="{{i.id}}">{{i.position}}</option>
+                  
+                          {% endfor %}
+                        </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Select Interviewer <span class="text-red">*</span></label>
+                    <select class="form-control form-select select2" data-bs-placeholder="Select Interviewer" name="interview_id" >
+                        <option value="" selected>Select Interviewer</option>
+            {% for i in user%}
+            <option value="{{i.id}}">{{i.first_name}}</option>
+
+            {% endfor %}
+        
+                        </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Address <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Address" name="address"required >
+                </div>
+            </div>
+            <div class="col-md-6" >
+                <div class="form-group">
+                    <b><label class="form-label" name="mode">Interview Mode</label></b>
+                    <div class="p-t-10">
+                        <label class="form-label" >Online
+                            <input type="radio" name="mode" value="Online" required>
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="form-label" >Offline
+                            <input type="radio" name="mode" value="Offline"
+                            required>
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    
+                </div>
+            </div>
+
+
+
+            <div class="col-sm-6 col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Phone <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" name="phone" placeholder="Enter phone">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Upload CV <span class="text-red">*</span></label>
+                    <input type="file" class="form-control" placeholder="Upload cv" name="uploadfile">
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+        </div>
+    </div>
+</div>
+</form>
+
+{% endblock main_content %}

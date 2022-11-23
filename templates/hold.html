@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<div class="row">
+    <div class="col-sm-10 offset-1">
+      <br><br>
+     <h1 class="text-center">Hold Candidate</h1>
+      <table class="pass">
+        <style>
+          .pass{
+            margin-left: 150px;
+          }
+          td, th{
+            padding: 10px;
+          }
+        </style>
+        <table class="table" >
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">city</th>
+            <th scope="col">Date and time</th>
+            <th scope="col">Domain Applied for</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Interviewer</th>
+
+            <th scope="col">Possition applied for</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+         {% for st in hold %}
+          <tr>
+            <th scope="row">{{st.id}}</th>
+            <td>{{st.first_name}}</td>
+            <td>{{st.email}}</td>
+            <td>{{st.Address}}</td>
+            <td>{{st.datetime}}</td>
+            <td>{{st.domain_interview}}</td>
+            <td>{{st.phone}}</td>
+            <td>{{st.user}}</td>
+            <td>{{st.position}}</td>
+
+          </tr>
+         {% endfor %}
+        </tbody>
+      </table>
+    </div>
+   </div>
+
+
+
+
+
+{% endblock main_content %}
+

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<form method="POST" >
+    {% csrf_token %}
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary" role="alert">
+  {{message}}
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+    <div class="card-header">
+        <h1 class="card-title" >Edit Data</h1>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6 col-md-6">
+                <div class="form-group">
+                
+                    <label class="form-label">First Name <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" {% if user.first_name %}value="{{ user.first_name }}"{% else %} placeholder="Type your first name" {% endif %} name="fname" required >
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Last Name <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" {% if user.last_name %}value="{{ user.last_name }}"{% else %} placeholder="Type your last name" {% endif %}  name="lname" required >
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Email address <span class="text-red">*</span></label>
+                    <input type="email" class="form-control" {% if user.email %}value="{{ user.email }}"{% else %} placeholder="Enter your Address" {% endif %}  name="Email"required >
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Date and Time <span class="text-red">*</span></label>
+                    <input type="datetime-local" class="form-control" {% if user.datetime %} value = "{{user.datetime|date:'Y-m-d'}}T{{user.datetime|time:'H:i'}}"
+                    {% else %} placeholder="Enter Date time for interview" {% endif %} name="datetime" required >
+                </div>
+            </div>
+            
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Address <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" {% if user.address %}value="{{ user.address }}"{% else %} placeholder="Enter your Address" {% endif %}  name="address"required >
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Phone <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" {% if user.phone %}value="{{ user.phone }}"{% else %} placeholder="Enter your Phone number" {% endif %} name="phone" >
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Upload CV <span class="text-red">*</span></label>
+                    <input type="file" class="form-control" {% if user.user_cv %}value="{{ user.user_cv }}"{% else %} placeholder="upload cv" {% endif %} name="uploadfile">
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+        </div>
+    </div>
+</div>
+</form>
+
+{% endblock main_content %}
