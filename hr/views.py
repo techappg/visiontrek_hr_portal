@@ -88,7 +88,8 @@ def create_meeting(request):
         position_id = request.POST.get("position")
         position = Pos_choice.objects.get(id=position_id)
         phone = request.POST.get("phone")
-        cv = request.FILES.get("uploadfile")
+        cv = request.FILES["file"]
+        print(cv)
         interviewer_id = request.POST.get('interview_id')
         # print(User.objects.filter(id=interviewer_id).values('email'))
         interviewer = User.objects.get(id=interviewer_id)
@@ -139,11 +140,19 @@ def delete_data(request):
 def edit_data(request):
     id = request.GET.get("id")
     user_obj = Interview_meeting.objects.get(id=id)
+    domain_obj = Domain_name.objects.all()
+    pos_obj = Pos_choice.objects.all()
+    user = User.objects.all()
+
     print(user_obj.first_name)
     print(user_obj.last_name)
 
     context ={
-        "user":user_obj
+        "users":user_obj,
+        "domain":domain_obj,
+        "pos":pos_obj,
+        "new_user":user
+
     }
 
     print("context::", context)

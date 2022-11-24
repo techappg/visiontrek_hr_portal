@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main_content %}
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="container">
         {% if messages %}
@@ -116,7 +116,7 @@
             <div class="col-sm-6 col-md-6">
                 <div class="form-group">
                     <label class="form-label">Upload CV <span class="text-red">*</span></label>
-                    <input type="file" class="form-control" placeholder="Upload cv" name="uploadfile">
+                    <input type="file" class="form-control" placeholder="Upload cv" name="file">
                 </div>
             </div>
             <div class="col-12">

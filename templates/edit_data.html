@@ -21,45 +21,89 @@
                 <div class="form-group">
                 
                     <label class="form-label">First Name <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" {% if user.first_name %}value="{{ user.first_name }}"{% else %} placeholder="Type your first name" {% endif %} name="fname" required >
+                    <input type="text" class="form-control" {% if users.first_name %}value="{{ users.first_name }}"{% else %} placeholder="Type your first name" {% endif %} name="fname" required >
                 </div>
             </div>
             <div class="col-sm-6 col-md-6">
                 <div class="form-group">
                     <label class="form-label">Last Name <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" {% if user.last_name %}value="{{ user.last_name }}"{% else %} placeholder="Type your last name" {% endif %}  name="lname" required >
+                    <input type="text" class="form-control" {% if users.last_name %}value="{{ users.last_name }}"{% else %} placeholder="Type your last name" {% endif %}  name="lname" required >
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="form-label">Email address <span class="text-red">*</span></label>
-                    <input type="email" class="form-control" {% if user.email %}value="{{ user.email }}"{% else %} placeholder="Enter your Address" {% endif %}  name="Email"required >
+                    <input type="email" class="form-control" {% if users.email %}value="{{ users.email }}"{% else %} placeholder="Enter your Address" {% endif %}  name="Email"required >
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="form-label">Date and Time <span class="text-red">*</span></label>
-                    <input type="datetime-local" class="form-control" {% if user.datetime %} value = "{{user.datetime|date:'Y-m-d'}}T{{user.datetime|time:'H:i'}}"
+                    <input type="datetime-local" class="form-control" {% if users.datetime %} value = "{{users.datetime|date:'Y-m-d'}}T{{users.datetime|time:'H:i'}}"
                     {% else %} placeholder="Enter Date time for interview" {% endif %} name="datetime" required >
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Domain Applied for <span class="text-red">*</span></label>
+                    <select class="form-control form-select select2" data-bs-placeholder="Select" name="domain_id" >
+                        {% for dom in domain %}
             
+                      
+                          <option value="{{ dom.id }}"{% if dom.name == users.domain_interview %} selected {% endif %} >{{ dom.name}}</option>
+                  
+                       
+                          {% endfor %}
+                        </select>
+                </div>
+            </div>
+
+             <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Position Applied for <span class="text-red">*</span></label>
+                    <select class="form-control form-select select2" data-bs-placeholder="Select" name="position" >
+                        <option selected>Select Position</option>
+                        {% for dom in pos %}
+                
+                      
+                        <option value="{{ dom.id }}"{% if dom.position == users.position %} selected {% endif %} >{{ dom.position}}</option>
+                        {% endfor %}
+                          
+                  
+                        
+                        </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Select Interviewer <span class="text-red">*</span></label>
+                    <select class="form-control form-select select2" data-bs-placeholder="Select Interviewer" name="interview_id" >
+                        <option value="" selected>Select Interviewer</option>
+            
+                        {% for dom in new_user %}
+                
+                      
+                        <option value="{{ dom.id }}"{% if dom.username == users.user %} selected {% endif %} >{{ dom.username}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="form-label">Address <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" {% if user.address %}value="{{ user.address }}"{% else %} placeholder="Enter your Address" {% endif %}  name="address"required >
+                    <input type="text" class="form-control" {% if users.address %}value="{{ users.address }}"{% else %} placeholder="Enter your Address" {% endif %}  name="address"required >
                 </div>
             </div>
             <div class="col-sm-6 col-md-6">
                 <div class="form-group">
                     <label class="form-label">Phone <span class="text-red">*</span></label>
-                    <input type="text" class="form-control" {% if user.phone %}value="{{ user.phone }}"{% else %} placeholder="Enter your Phone number" {% endif %} name="phone" >
+                    <input type="text" class="form-control" {% if users.phone %}value="{{ users.phone }}"{% else %} placeholder="Enter your Phone number" {% endif %} name="phone" >
                 </div>
             </div>
             <div class="col-sm-6 col-md-6">
                 <div class="form-group">
                     <label class="form-label">Upload CV <span class="text-red">*</span></label>
-                    <input type="file" class="form-control" {% if user.user_cv %}value="{{ user.user_cv }}"{% else %} placeholder="upload cv" {% endif %} name="uploadfile">
+                    <input type="file" class="form-control" {% if users.user_cv %}value="{{ users.user_cv }}"{% else %} placeholder="upload cv" {% endif %} name="uploadfile">
                 </div>
             </div>
             <div class="col-12">
