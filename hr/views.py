@@ -45,6 +45,27 @@ def home(request):
 
     return render(request,'home.html', context)
 
+def office_meeting(request):
+    user_obj = User.objects.all()
+    context = {
+        'particepant':user_obj
+    } 
+    if request.method == "POST":
+        agenda = request.POST.get('magenda')
+        date = request.POST.get('datetime')
+        description = request.POST.get('description')
+        participants = request.POST.getlist('user')
+        print("================",participants)
+        meeting = Office_meeting.objects.create(Meeting_Agenda=agenda,datetime=date,Description=description,user=participants)
+        messages.success(request,"Office meeting created  Successfully")
+
+
+
+
+    return render(request,'office_meeting.html',context)
+
+
+
 def selected_data(request):
     
     select = Interview_meeting.objects.filter(status='Selected')
@@ -144,8 +165,6 @@ def edit_data(request):
     pos_obj = Pos_choice.objects.all()
     user = User.objects.all()
 
-    print(user_obj.first_name)
-    print(user_obj.last_name)
 
     context ={
         "users":user_obj,

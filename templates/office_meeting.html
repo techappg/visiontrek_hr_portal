@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<script>
+    function getvalues()
+    {
+        var selchk = document.getElementsByName("user")
+
+        var text = ""
+        if(selchk[i].checked)
+        {
+            txt+=$(this).val()+",";
+            
+        }
+
+ 
+
+    }
+</script>
+
+
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary" role="alert">
+  {{message}}
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+    <div class="card-header">
+        <h1 class="card-title">Create Office Meeting</h1>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Meeting Agenda  <span class="text-red">*</span></label>
+                    <input type="text" class="form-control" placeholder="Meeting agenda" name="magenda" required >
+                </div>
+            </div>
+         
+        
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Date and Time <span class="text-red">*</span></label>
+                    <input type="datetime-local" class="form-control" placeholder="Date time" name="datetime" required >
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Select Meeting participant  <span class="text-red">*</span></label>
+                    <div id="tbl1">
+                   <br>
+                        
+                        {% for dom in particepant %}
+            
+                        
+                        <input type="checkbox" name='user' value = "{{dom.username}}" >
+                     {{dom.username}}
+                        
+                        {% endfor %}
+                    </div>
+                        </select>
+                        <b id="values" name="value"></b>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-label">Description  <span class="text-red">*</span></label>
+                    <textarea  class="form-control" placeholder="Add Description " name="description"  ></textarea>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock main_content %}

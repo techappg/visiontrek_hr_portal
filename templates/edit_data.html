@@ -103,7 +103,7 @@
             <div class="col-sm-6 col-md-6">
                 <div class="form-group">
                     <label class="form-label">Upload CV <span class="text-red">*</span></label>
-                    <input type="file" class="form-control" {% if users.user_cv %}value="{{ users.user_cv }}"{% else %} placeholder="upload cv" {% endif %} name="uploadfile">
+                    <input type="file" class="form-control" {% if users.user_cv %}value="{{ users.user_cv.url }}"{% else %} placeholder="upload cv" {% endif %} name="uploadfile">
                 </div>
             </div>
             <div class="col-12">

@@ -11,7 +11,9 @@ urlpatterns = [
     path('edit_data',edit_data,name='edit_data'),
     path('selected',selected_data,name='selected'),
     path('rejected',reject_data,name='rejected'),
-    path('hold',hold_data,name='hold')
+    path('hold',hold_data,name='hold'),
+    path('office_meeting',office_meeting,name='office_meeting')
+
     
     
     

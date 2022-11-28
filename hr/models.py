@@ -14,7 +14,7 @@ class Office_meeting(models.Model):
     Meeting_Agenda=models.CharField( max_length=50)
     Description=models.TextField() 
     datetime= models.DateTimeField( auto_now=False, auto_now_add=False)
-    user = models.ManyToManyField(User, related_name='user_office_meeting' )
+    user = models.CharField(max_length=50)
     soft_delete=models.BooleanField(default=False)  #softdelete
 
     
