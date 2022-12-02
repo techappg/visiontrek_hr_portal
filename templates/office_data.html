@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+<div class="row">
+
+    <div class="row">
+        <div class="col-sm-10 offset-1">
+          <br><br>
+         <h1 class="text-center"> Dashboard</h1>
+          <table class="pass">
+            <style>
+              .pass{
+                margin-left: 150px;
+              }
+              td, th{
+                padding: 10px;
+              }
+            </style>
+            <table class="table" >
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Meeting Agenda</th>
+                <th scope="col">Date and time</th>
+                <th scope="col">Select Meeting participant</th>
+                <th scope="col">Description</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <a href="{{ my_bill.url }}">{{ my_bill.name }}</a>
+             {% for st in office %}
+              <tr>
+                <th scope="row">{{st.id}}</th>
+                <td>{{st.Meeting_Agenda}}</td>
+                <td>{{st.datetime}}</td>
+                <td>{{st.user}}</td>
+                <td>{{st.Description}}</td>
+                <td>
+<a href="{% url 'edit_offc_data' %}?id={{st.id}}">Edit Data</a>
+
+<a href="#deleteEmployeeModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>Delete</a>
+<div id="deleteEmployeeModal-{{forloop.counter}}" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">						
+          <h4 class="modal-title">Delete Employee</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">					
+          <p>Are you sure you want to delete these Records?</p>
+          <p class="text-warning"><small>{{st.first_name}} Information are delete</small></p>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+          <a href="{% url 'delete_data_offc' %}?id={{st.id}}" type="submit" class="btn btn-danger">Delete</a>
+        </div>
+</td>
+                
+                {% endfor %}
+           
+                    <!-- <a href="{% url 'delete_data' %}?id={{st.id}}" type="submit" class="btn btn-danger">Delete</a> -->
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal-{{st.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="{% url 'home' %}?id={{ st.id }}">
+                {% csrf_token %}
+                <div class="container">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-primary" role="alert">
+              {{message}}
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+             
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                            
+                                <label class="form-label">First Name <span class="text-red">*</span></label>
+                                <input type="text" class="form-control" {% if st.first_name %}value="{{ st.first_name }}"{% else %} placeholder="Type your first name" {% endif %} name="fname" disabled required >
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Last Name <span class="text-red">*</span></label>
+                                <input type="text" class="form-control" {% if st.last_name %}value="{{ st.last_name }}"{% else %} placeholder="Type your last name" {% endif %}  name="lname" disabled required >
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Email address <span class="text-red">*</span></label>
+                                <input type="email" class="form-control" {% if st.email %}value="{{ st.email }}"{% else %} placeholder="Enter your Address" {% endif %}  name="Email" disabled required >
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Date and Time <span class="text-red">*</span></label>
+                                <input type="datetime-local" class="form-control" {% if st.datetime %} value = "{{st.datetime|date:'Y-m-d'}}T{{st.datetime|time:'H:i'}}"
+                                {% else %} placeholder="Enter Date time for interview" {% endif %} name="datetime" disabled required >
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Address <span class="text-red">*</span></label>
+                                <input type="text" class="form-control" {% if st.address %}value="{{ st.address }}"{% else %} placeholder="Enter your Address" {% endif %}  name="address"required disabled >
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Phone <span class="text-red">*</span></label>
+                                <input type="text" class="form-control" {% if st.phone %}value="{{ st.phone }}"{% else %} placeholder="Enter your Phone number" {% endif %} name="phone" disabled >
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Candidate CV <span class="text-red">*</span></label>
+                                <li>{{ candidate.user_cv.url }}</li>
+                           
+                            </div>
+                        </div>
+                        <div class="col-3">
+                          
+                            <div class="form-group">
+                                <label class="form-label">Status <span class="text-red">*</span></label>
+                                <select class="form-control form-select select2" data-bs-placeholder="Select" name="status_id" >
+                                  
+                                  <option value="Hold">Hold</option>
+                                  <option value="Selected">Selected</option>
+                                  <option value="Rejected">Rejected</option>
+
+                                  </select>
+
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><br><br>
+                                  <button type="Submit" class="btn btn-primary">Save changes</button>       
+                        </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+            
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+                  
+              
+                  
+                </td>
+              </tr>
+             
+            </tbody>
+          </table>
+        </div>
+       </div>
+
+{% endblock main_content %}

@@ -1,11 +1,10 @@
-var selected = new Array()
-        
-var selchk = document.getElementsByName("user")
-for(var i=0;i<selchk.length;i++)
-{
-    if(selchk[i].checked)
-    {
-        selected.push(selchk[i].values)
-    }
-}
-alert(selected)
+
+
+
+user
+
+
+
+{% for i in choices %}
+{{i}}
+

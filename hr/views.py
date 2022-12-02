@@ -55,16 +55,40 @@ def office_meeting(request):
         date = request.POST.get('datetime')
         description = request.POST.get('description')
         participants = request.POST.getlist('user')
-        print("================",participants)
         meeting = Office_meeting.objects.create(Meeting_Agenda=agenda,datetime=date,Description=description,user=participants)
         messages.success(request,"Office meeting created  Successfully")
-
-
-
 
     return render(request,'office_meeting.html',context)
 
 
+def office_meeting_data(request):
+    office_obj = Office_meeting.objects.all()
+    user_obj = User.objects.all()
+    
+    context = {
+        'office':office_obj,
+        'user':user_obj
+    }
+    return render(request,'office_data.html',context)
+
+def delete_data_offc(request):
+        id = request.GET.get("id")
+        user = Office_meeting.objects.get(id=id)
+        user.delete()
+        messages.success(request,"Delete Data Successfully")
+
+        return redirect('office_meeting_data')
+
+def edit_office_meeting(request):
+    id = request.GET.get("id")
+    office_obj = Office_meeting.objects.get(id=id)
+    print(office_obj.user)
+    user_obj = User.objects.all()
+    context = {
+        'office':office_obj,
+        'user':user_obj
+    }
+    return render(request,'edit_offc_data.html',context)
 
 def selected_data(request):
     
@@ -91,7 +115,7 @@ def create_meeting(request):
     context = {
         "domain":domain_obj,
         "user":user_obj,
-        "pos":pos_obj
+        "pos":pos_obj,
     }
     
     if request.method == "POST":
@@ -204,4 +228,5 @@ def edit_data(request):
         return redirect('hr_dashboard')
 
     return render(request,'edit_data.html',context)
+
 
