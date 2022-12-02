@@ -82,12 +82,24 @@ def delete_data_offc(request):
 def edit_office_meeting(request):
     id = request.GET.get("id")
     office_obj = Office_meeting.objects.get(id=id)
-    print(office_obj.user)
     user_obj = User.objects.all()
     context = {
         'office':office_obj,
         'user':user_obj
     }
+    if request.method == 'POST':
+        agenda = request.POST.get('magenda')
+        date = request.POST.get('datetime')
+        description = request.POST.get('description')
+        participants = request.POST.getlist('user')
+        office_obj.Meeting_Agenda = agenda
+        office_obj.datetime = date
+        office_obj.Description = description
+        office_obj.user = participants
+        office_obj.save()
+        messages.success(request,"meeting update successfully")
+        return redirect('office_meeting_data')
+
     return render(request,'edit_offc_data.html',context)
 
 def selected_data(request):

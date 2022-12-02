@@ -57,13 +57,16 @@
                     <div id="tbl1">
                    <br>
                         
+
+
                         {% for dom in user %}
             
                         
-                        <input type="checkbox" name='user' value = "{{dom.id}}"{% if office.user.checked %} checked {% endif %} {{ dom.first_name }}>
-                     {{dom.username}}
+                        <input type="checkbox" name='user' value = "{{dom.username}}"{% if dom.username in office.user %} checked {% endif %} >{{ dom.username }}
+                    
+                     {% endfor %}
                         
-                        {% endfor %}
+                        
                     </div>
                         </select>
                         <b id="values" name="value"></b>
