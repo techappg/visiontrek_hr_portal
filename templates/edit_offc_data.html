@@ -60,7 +60,7 @@
                         {% for dom in user %}
             
                         
-                        <input type="checkbox" name='user' value = "{{dom.id}}"{% if office.user %} checked {% endif %} {{ dom.first_name }}>
+                        <input type="checkbox" name='user' value = "{{dom.id}}"{% if office.user.checked %} checked {% endif %} {{ dom.first_name }}>
                      {{dom.username}}
                         
                         {% endfor %}
