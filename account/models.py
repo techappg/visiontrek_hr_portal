@@ -38,7 +38,8 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=150,null=True,blank=True)
     last_name = models.CharField(max_length=150,null=True,blank=True)
     email = models.EmailField("email address",null=True,blank=True)
-    
+    user_type_data = ((1, "Admin"), (2, "Hr"), (3, "Employee"))
+    user_type = models.CharField(default=1, choices=user_type_data, max_length=10, null=True, blank=True)
     Employee_code = models.IntegerField(unique=True,null=True,blank=True)
     soft_delete = models.BooleanField(default=False)
     address=models.CharField( max_length=520)

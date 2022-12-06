@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives,send_mail,EmailMessage
+from .forms import AddUserForm
 # Create your views here.
 
 
@@ -18,6 +19,51 @@ from django.core.mail import EmailMultiAlternatives,send_mail,EmailMessage
 
 def dashboard(request):
     return render(request,'base.html')
+
+
+def AddUser(request):
+    form = AddUserForm(request.POST)
+
+    if request.method == "POST":
+     
+
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            address = form.cleaned_data['address']
+            user_id = form.cleaned_data['usertype']
+            pos_id = form.cleaned_data['position']
+            dom_id = form.cleaned_data['domain']
+
+        
+            try:
+                user = User.objects.create(username=username, password=password, email=email, first_name=first_name, last_name=last_name, user_type=3,address=address)
+                
+
+                user_obj = User.objects.get(id=user_id)
+                user.usertype = user_obj
+
+                pos_obj = Pos_choice.objects.get(id=pos_id)
+                user.position = pos_obj
+
+                dom_obj = Domain_name.objects.get(id=dom_id)
+                user.domain = dom_obj
+                user.save()
+                messages.success(request, "User Added Successfully!")
+                return redirect('dashboard')
+            except:
+                messages.error(request, "Failed to Add Student!")
+                return redirect('dashboard')
+        else:
+            return redirect('add_student')
+    print(form)
+    return render(request,'adduser.html',{"form":form})
+
+
+
 
 def home(request):
     all_candidate_count = Interview_meeting.objects.all().count()
