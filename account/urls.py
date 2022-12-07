@@ -1,10 +1,11 @@
 from django.urls import path
 from . views import *
 from django.contrib.auth import views as auth_views
-
+from hr.views import *
 urlpatterns = [
     path('',doLogin,name='login'),
     path('employee_home',employee_home,name='employee_home'),
+    path('punchin',punchin,name='punchin'),
 
 
 #  password reset urls

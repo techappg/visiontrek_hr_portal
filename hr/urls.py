@@ -18,6 +18,8 @@ urlpatterns = [
     path('office_meeting_data',office_meeting_data,name='office_meeting_data'),
     path('edit_office_meeting',edit_office_meeting,name='edit_offc_data'),
     path('add_student/', AddUser, name="adduser"),
+    path('emp_leave_apply/', Empl_leave_apply, name="emp_leave_apply"),
+
 
 
 

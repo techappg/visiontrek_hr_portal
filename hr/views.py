@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives,send_mail,EmailMessage
 from .forms import AddUserForm
+from datetime import datetime
 # Create your views here.
 
 
@@ -16,9 +17,33 @@ from .forms import AddUserForm
 #         Interview_meeting.objects.filter(id=id).update(status=status)
    
 #     return redirect('showhrdashboard')
+def Empl_leave_apply(request):
+    
+    if request.method == "POST":
+        leave_date = request.POST.get('leave_date')
+        leave_message = request.POST.get('leave_message')
+
+        emp_obj = User.objects.get(id=request.user.id)
+        
+        leave_report = LeaveReportEmployee(emp_id=emp_obj, leave_date=leave_date, leave_message=leave_message, leave_status=0)
+        leave_report.save()
+        messages.success(request, "Applied for Leave.")
+        return redirect('emp_leave_apply')
+        
+
+    return render(request,'employee/emp_apply_leave.html')
+
+
 
 def dashboard(request):
     return render(request,'base.html')
+
+def employee_home(request):
+    punch_in = datetime.now()
+    
+    print(punch_in)
+    return render(request,'employee/emp_dashboard.html')
+
 
 
 def AddUser(request):

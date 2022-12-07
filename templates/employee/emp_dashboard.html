@@ -1,0 +1,90 @@
+{% extends 'employee/base.html' %}
+{% load static %}
+
+
+{% block custom_css %}
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+
+{% endblock custom_css %}
+{% block punch %}
+<form  method="post">
+    {% csrf_token %}
+<button type="submit" id='punch' class="btn btn-danger" onclick="return out()" >Punchin</button>
+  </form>
+  {% endblock punch %}
+{% block main_content %}
+
+<h2>Time in-out </h2>
+
+<table>
+  <tr>
+    <th>S.no</th>
+    <th>Time in</th>
+    <th>Time out</th>
+    <th>Total working hour</th>
+  </tr>
+  <tr>
+    <td></td>
+  <td id="punch_in"></td>
+  <td></td>
+  <td></td>
+  </tr>
+</table>
+      
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+function out(){
+       let btnShow = document.querySelector('button')
+       let output = document.getElementById('punch_in')
+       
+        let today = new Date();
+        let month = today.getMonth() + 1;
+        let year = today.getFullYear();
+        let date = today.getDate();
+        let current_date = `${month}/${date}/${year}`;
+
+
+        // output.innerText = current_date;
+        let hours = today.getHours();
+        let minutes = today.getMinutes();
+        let seconds = today.getSeconds();
+        let current_time = `${hours}:${minutes}:${seconds}`;
+        output.innerHTML = current_time;
+      login_dic={"time":current_time,csrfmiddlewaretoken:'{{ csrf_token }}'}
+   return false;     
+}
+    
+    $.ajax({
+        url: "{% url 'punchin' %}",
+        type: 'POST',
+        data:login_dic
+        
+    })
+
+    .done(function(response){
+        alert("done")
+        var date_data = JSON.parse(response);
+        $("#punch_in").html(date_data);
+
+    })
+
+</script>
+{% endblock custom_js %}

@@ -3,8 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from account.EmailBackEnd import EmailBackEnd
-
-
+from django.views.decorators.csrf import csrf_exempt
+from hr.models import Punch
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+import json
 def doLogin(request):
     if request.method == "POST":
      
@@ -12,7 +14,7 @@ def doLogin(request):
         print(user)
         if user:
             login(request, user)
-            user_type = user.usertype
+            user_type = user.user_type
             print(user_type)
             # return redirect('dashboard')
             #return HttpResponse("Email: "+request.POST.get('email')+ " Password: "+request.POST.get('password'))
@@ -33,6 +35,11 @@ def doLogin(request):
             return redirect('login')
     return render(request,'login.html')
 
+@csrf_exempt
+def punchin(request):
 
-def employee_home(request):
-    return render(request,'employee/home.html')
+    date = request.POST.get('time')
+    print(date)
+    punch = Punch.objects.create(punch_in=date)
+    date_list = list(date)
+    return JsonResponse(json.dumps(date_list),content_type="application/json",safe=False)

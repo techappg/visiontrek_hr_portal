@@ -1,0 +1,184 @@
+{% load static %}
+{% block custom_css %}
+<style>
+  .dropbtn {
+    margin: 13px;
+    background-color: #6c757d;
+    color: white;
+    padding: 5px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #6c757d;
+    min-width: 160px;
+    /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: #6c757d;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {background-color: #313538}
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .dropdown:hover .dropbtn {
+    background-color: #6c757d;
+  }
+</style>
+
+{% endblock custom_css %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="#" class="brand-link">
+        <img src="{% static 'dist/img/logo.png' %}" alt="" class="" height="90px" width="230px" >
+        
+        <!-- <span class="brand-text font-weight-light">Visiontrek</span> -->
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+     
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+
+                <li class="nav-item">
+                  
+                  <i class="nav-icon fas fa-user-graduate"><button class="dropbtn">Dashboard</button></i>
+                    <a href="{% url 'punchin' %}" class="nav-link {% if request.path == create_meeting %} active {% endif %}">
+                      <style>
+                        i{
+                          color: white;
+                          text-align: center;
+                        }
+                      </style>
+                    </a>
+                  </li>
+                
+          
+            
+            <!-- <li class="nav-item">
+                
+                <a href="{{ dashboard }}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
+                  <i class="nav-icon fas fa-chalkboard-teacher"></i>
+
+               
+           
+                <p>
+                  Internal Meeting
+                </p>
+              </a>
+            </li> -->
+
+     
+<!-- 
+            <li class="nav-item">
+                <a href="{% url 'hr_dashboard' %}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
+                  <i class="nav-icon fas fa-chalkboard"></i>
+    
+                <p>
+                  Interview Data
+                </p>
+              </a>
+            </li> -->
+
+            <li class="nav-item">
+                       
+              <div class="dropdown">
+                <i class="nav-icon fas fa-th"><button class="dropbtn">Team</button></i>
+                <div class="dropdown-content">
+            <a href="#" class="nav-link {% if request.path == create_meeting %} active {% endif %}">Python</a>
+            <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">Java </a>
+            <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">React </a>
+            <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">BDE </a>                
+                </div>
+              </div>
+             
+            </a>
+          </li>
+          <li class="nav-item">
+                  
+               
+            <div class="dropdown">
+              <i class="nav-icon fas fa-th"></i>
+          
+              <button class="dropbtn">Leaves</button>
+              <div class="dropdown-content">
+          <a href="{% url 'emp_leave_apply' %}" class="nav-link {% if request.path == create_meeting %} active {% endif %}">Apply Leave</a>
+          <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">Leave Details </a>
+                
+              </div>
+            </div>
+           
+          </a>
+        </li>
+        <li class="nav-item">
+                  
+               
+          <div class="dropdown">
+            <i class="nav-icon fas fa-th"></i>
+        
+            <button class="dropbtn">Daily Task</button>
+            <div class="dropdown-content">
+        <a href="#" class="nav-link {% if request.path == create_meeting %} active {% endif %}">All Task Leave</a>
+        <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">Add New Task </a>
+              
+            </div>
+          </div>
+         
+        </a>
+      </li>
+
+      
+
+    
+
+            <li class="nav-item">
+              <div class="dropdown">
+                <i class="nav-icon fas fa-tachometer-alt"> <button class="dropbtn">Leaves</button> </i>
+                <a href="{{ dashboard }}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
+
+                  <!-- <style>
+                    .sidebar .nav-link i{
+                      margin-left: 40px;
+                      color: blue;
+                      
+                    }
+                  </style> -->
+                </a>
+              </div>
+            </li>
+
+            <li class="nav-item">
+              <i class="fa-solid fa-gear"><button class="dropbtn">Settings</button></i>
+              <a href="{{ dashboard }}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
+                
+            </a>
+          </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
