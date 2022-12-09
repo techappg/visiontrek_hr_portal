@@ -51,6 +51,7 @@
 
 {% block custom_js %}
 <script>
+  
 function out(){
        let btnShow = document.querySelector('button')
        let output = document.getElementById('punch_in')
@@ -68,14 +69,14 @@ function out(){
         let seconds = today.getSeconds();
         let current_time = `${hours}:${minutes}:${seconds}`;
         output.innerHTML = current_time;
-      login_dic={"time":current_time,csrfmiddlewaretoken:'{{ csrf_token }}'}
+        date_dic={"time":current_time}
    return false;     
-}
+
     
     $.ajax({
-        url: "{% url 'punchin' %}",
+      url:"{% url 'punchin' %}",
         type: 'POST',
-        data:login_dic
+        data:date_dic
         
     })
 
@@ -85,6 +86,6 @@ function out(){
         $("#punch_in").html(date_data);
 
     })
-
+  }
 </script>
 {% endblock custom_js %}

@@ -5,7 +5,7 @@ from hr.views import *
 urlpatterns = [
     path('',doLogin,name='login'),
     path('employee_home',employee_home,name='employee_home'),
-    path('punchin',punchin,name='punchin'),
+    path('punchin/',punchin,name='punchin'),
 
 
 #  password reset urls

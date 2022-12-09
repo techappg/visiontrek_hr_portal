@@ -33,6 +33,24 @@ def Empl_leave_apply(request):
 
     return render(request,'employee/emp_apply_leave.html')
 
+def emp_leave_view(request):
+    leave_obj = LeaveReportEmployee.objects.all()
+
+    return render(request,'emp_leave_view.html',{'leaves':leave_obj})
+
+def emp_leave_approve(request, leave_id):
+    leave = LeaveReportEmployee.objects.get(id=leave_id)
+    leave.leave_status = 1
+    leave.save()
+    return redirect('emp_leave_view')
+
+
+def emp_leave_reject(request, leave_id):
+    leave = LeaveReportEmployee.objects.get(id=leave_id)
+    leave.leave_status = 2
+    leave.save()
+    return redirect('emp_leave_view')
+
 
 
 def dashboard(request):
@@ -44,7 +62,8 @@ def employee_home(request):
     print(punch_in)
     return render(request,'employee/emp_dashboard.html')
 
-
+def add_task(request):
+    return render(request,'employee/add_task.html')
 
 def AddUser(request):
     form = AddUserForm(request.POST)

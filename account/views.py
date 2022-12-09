@@ -37,9 +37,9 @@ def doLogin(request):
 
 @csrf_exempt
 def punchin(request):
-
-    date = request.POST.get('time')
-    print(date)
-    punch = Punch.objects.create(punch_in=date)
-    date_list = list(date)
-    return JsonResponse(json.dumps(date_list),content_type="application/json",safe=False)
+        print("helllooooo")
+        date = request.data
+        print("=============================", date)
+        punch = Punch.objects.create(punch_in=date)
+        date_list = list(date)
+        return JsonResponse(json.dumps(date_list),content_type="application/json",safe=False)

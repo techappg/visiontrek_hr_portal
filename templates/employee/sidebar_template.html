@@ -141,8 +141,8 @@
         
             <button class="dropbtn">Daily Task</button>
             <div class="dropdown-content">
-        <a href="#" class="nav-link {% if request.path == create_meeting %} active {% endif %}">All Task Leave</a>
-        <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">Add New Task </a>
+        <a href="{% url 'add_task' %}" class="nav-link {% if request.path == create_meeting %} active {% endif %}">Add New Task </a>
+        <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">All Task </a>
               
             </div>
           </div>
