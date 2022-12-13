@@ -7,6 +7,10 @@ from django.views.decorators.csrf import csrf_exempt
 from hr.models import Punch
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import json
+from datetime import datetime
+from django.utils.timezone import timedelta
+
+
 def doLogin(request):
     if request.method == "POST":
      
@@ -35,11 +39,36 @@ def doLogin(request):
             return redirect('login')
     return render(request,'login.html')
 
+
+
 @csrf_exempt
 def punchin(request):
-        print("helllooooo")
-        date = request.data
-        print("=============================", date)
-        punch = Punch.objects.create(punch_in=date)
-        date_list = list(date)
-        return JsonResponse(json.dumps(date_list),content_type="application/json",safe=False)
+    print("helllooooo")
+    
+    date_time_obj = request.POST["time"]
+    print("aaaaa",date_time_obj)
+    status = request.POST.get('punchin') 
+    
+    print(status)
+    print(date_time_obj)
+    time_obj = date_time_obj[16:24:1]
+    date_obj = date_time_obj[0:15]
+    # a = datetime.strptime(date_obj,'%a %b %m %Y')
+    print('aaa',time_obj)
+
+    print('a',date_obj)
+  
+    datetime_object = datetime.strptime(time_obj, '%H:%M:%S')
+    # datetime_object = datetime.strptime(date_time_obj, '%a %b %m %Y %I:%p:%S %X %Z%z%f')
+    print('dateeeee',datetime_object)
+    
+    
+    punch = Punch.objects.create(punch_in=datetime_object,punch_date=date_obj,marked=status)
+    
+    date_list = list(date_time_obj)
+    return JsonResponse(json.dumps(date_time_obj),content_type="application/json",safe=False)
+
+
+
+
+    '2022-12-12 04:39:05.182486'

@@ -18,7 +18,8 @@ from datetime import datetime
    
 #     return redirect('showhrdashboard')
 def Empl_leave_apply(request):
-    
+    user_obj = User.objects.get(username=request.user)
+    leave_obj = LeaveReportEmployee.objects.filter(emp_id=user_obj)
     if request.method == "POST":
         leave_date = request.POST.get('leave_date')
         leave_message = request.POST.get('leave_message')
@@ -31,12 +32,9 @@ def Empl_leave_apply(request):
         return redirect('emp_leave_apply')
         
 
-    return render(request,'employee/emp_apply_leave.html')
+    return render(request,'employee/emp_apply_leave.html',{'leaves':leave_obj})
 
-def emp_leave_view(request):
-    leave_obj = LeaveReportEmployee.objects.all()
 
-    return render(request,'emp_leave_view.html',{'leaves':leave_obj})
 
 def emp_leave_approve(request, leave_id):
     leave = LeaveReportEmployee.objects.get(id=leave_id)
@@ -54,13 +52,16 @@ def emp_leave_reject(request, leave_id):
 
 
 def dashboard(request):
-    return render(request,'base.html')
+    return render(request,'employee/base.html')
 
 def employee_home(request):
-    punch_in = datetime.now()
+    punch = Punch.objects.filter(user=request.user).first()
+    print(punch)
+    context = { 
+        'punch':punch
+    }
     
-    print(punch_in)
-    return render(request,'employee/emp_dashboard.html')
+    return render(request,'employee/emp_dashboard.html',context)
 
 def add_task(request):
     return render(request,'employee/add_task.html')

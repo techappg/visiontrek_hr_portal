@@ -65,16 +65,18 @@
 
                 <li class="nav-item">
                   
-                  <i class="nav-icon fas fa-user-graduate"><button class="dropbtn">Dashboard</button></i>
-                    <a href="{% url 'punchin' %}" class="nav-link {% if request.path == create_meeting %} active {% endif %}">
-                      <style>
-                        i{
-                          color: white;
-                          text-align: center;
-                        }
-                      </style>
-                    </a>
-                  </li>
+                  <a href="{% url 'employee_home' %}" class="nav-link {% if request.path == create_meeting %} active {% endif %}">
+                    <style>
+                      i{
+                        color: white;
+                      }
+                    </style>
+                    <i class="nav-icon fas fa-user-graduate"></i>
+                    <p>
+                      Dashboard
+                    </p>
+                  </a>
+                </li>
                 
           
             

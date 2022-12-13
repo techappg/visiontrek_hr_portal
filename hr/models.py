@@ -46,9 +46,12 @@ class Interview_meeting(models.Model):
     
     
 class Punch(models.Model):
-    punch_in = models.DateTimeField(auto_now=False, auto_now_add=False,null=True,blank=True)
-    punch_out = models.DateTimeField(auto_now=False, auto_now_add=False,null=True,blank=True)
+    punch_date = models.CharField(max_length=50,null=True,blank=True)
+    punch_in = models.TimeField(auto_now=False, auto_now_add=False,null=True,blank=True)
+    punch_out = models.TimeField(auto_now=False, auto_now_add=False,null=True,blank=True)
     hours = models.CharField(max_length=100,null=True,blank=True)
+    marked=models.BooleanField(default=False,blank=True,null=True)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
   
 class LeaveReportEmployee(models.Model):
     id = models.AutoField(primary_key=True)

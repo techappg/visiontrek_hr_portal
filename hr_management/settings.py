@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
     'account',
     'hr'
 ]
@@ -142,3 +143,7 @@ EMAIL_USE_TLS = True
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
 
 # AUTHENTICATION_BACKENDS = ['account.EmailBackEnd.EmailBackEnd']
+
+CRONJOBS = [
+    ('* * * * *','account.cron.my_scedule')
+]

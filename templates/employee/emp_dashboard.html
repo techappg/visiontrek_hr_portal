@@ -23,30 +23,42 @@
 
 {% endblock custom_css %}
 {% block punch %}
-<form  method="post">
+<form  method="POST">
     {% csrf_token %}
-<button type="submit" id='punch' class="btn btn-danger" onclick="return out()" >Punchin</button>
+  
+<button type="button" id='punch' name="punchin" value="in" class="btn btn-danger" onclick="out()" >Punchin</button>
+
+<button type="button" id='punch_out' name="btn" value="out" class="btn btn-danger" onclick="out()" >Punchout</button>
+
   </form>
   {% endblock punch %}
 {% block main_content %}
 
 <h2>Time in-out </h2>
-
 <table>
   <tr>
     <th>S.no</th>
+    <th>Date</th>
+
     <th>Time in</th>
     <th>Time out</th>
     <th>Total working hour</th>
   </tr>
+{% for i in punch %}
+
   <tr>
-    <td></td>
-  <td id="punch_in"></td>
+
+  <td>{{i.id}}</td>
+  <td>{{i.punch_date}}</td>
+
+  <td id="punch_in">{{i.punch_in}}</td>
   <td></td>
   <td></td>
+
   </tr>
+  {% endfor %}
+
 </table>
-      
 {% endblock main_content %}
 
 {% block custom_js %}
@@ -54,9 +66,12 @@
   
 function out(){
        let btnShow = document.querySelector('button')
-       let output = document.getElementById('punch_in')
        
-        let today = new Date();
+       let output = document.getElementById('punch')
+       alert(`${output}`)
+       btnShow.style.display = 'none';
+       let today = new Date();
+        alert("inside")
         let month = today.getMonth() + 1;
         let year = today.getFullYear();
         let date = today.getDate();
@@ -68,24 +83,27 @@ function out(){
         let minutes = today.getMinutes();
         let seconds = today.getSeconds();
         let current_time = `${hours}:${minutes}:${seconds}`;
-        output.innerHTML = current_time;
-        date_dic={"time":current_time}
-   return false;     
-
-    
-    $.ajax({
-      url:"{% url 'punchin' %}",
-        type: 'POST',
-        data:date_dic
+      document.getElementById("punch").classList.add("d-none");
         
-    })
+        date_dic={"time":today}
 
-    .done(function(response){
-        alert("done")
-        var date_data = JSON.parse(response);
-        $("#punch_in").html(date_data);
+        $.ajax({
+          url:'http://127.0.0.1:8000/punchin/',
+          type: 'POST',
+          data:date_dic
 
-    })
-  }
+      })
+      .done(function(response){
+        console.log("ok")
+      document.getElementById("punch").classList.add("d-none");
+      
+      })
+      
+
+
+     
+
+}
+
 </script>
 {% endblock custom_js %}
