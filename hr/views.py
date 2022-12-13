@@ -8,6 +8,7 @@ from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives,send_mail,EmailMessage
 from .forms import AddUserForm
 from datetime import datetime
+from . models import task_choice
 # Create your views here.
 
 
@@ -56,7 +57,6 @@ def dashboard(request):
 
 def employee_home(request):
     punch = Punch.objects.filter(user=request.user)
-    
     context = { 
         'punch':punch
     }
@@ -64,7 +64,15 @@ def employee_home(request):
     return render(request,'employee/emp_dashboard.html',context)
 
 def add_task(request):
-    return render(request,'employee/add_task.html')
+    if request.method=="POST":
+  
+        task = request.POST.get("task_val")
+        file = request.POST.get("file")
+        detail = request.POST.get("taskdetail")
+        task_obj = Task.objects.create(task_type=task,screenshot=file,detail=detail,user_id=request.user)
+        
+
+    return render(request,'employee/add_task.html',{"choice":dict(task_choice)})
 
 def AddUser(request):
     form = AddUserForm(request.POST)

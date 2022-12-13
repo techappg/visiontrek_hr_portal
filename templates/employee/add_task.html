@@ -42,29 +42,37 @@
                                 </div>
                                 {% endif %}
                             
-                    <form method="POST" >
+                    <form method="POST" action="{% url 'add_task' %}?id={{user.id}}">
                         {% csrf_token %}
                         <div class="card-body">
-                            <div class="form-group">
-                                <label>Add Title </label>
-                                <input type="text" name="add_title">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Select Task Type <span class="text-red">*</span></label>
+                                    <select class="form-control form-select select2" data-bs-placeholder="Select" name="task_val" >
+                                        <option value="" selected>Select task </option>
+                            
+                                        {%  for i in choice %}
+                                          <option value="{{i}}">{{i}}</option>
+                                  
+                                          {% endfor %}
+                                          
+                                        </select>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Start Date </label>
-                                <input type="date" name="leave_date" class="form-control" />
+                            <div class="col-md-12">
+                            
+                                <div class="form-group">
+                                    <label class="form-label">Choose files/Screenshot <span class="text-red">*</span></label>
+                                    <input type="file" class="form-control" placeholder="Upload cv" name="file">
+                                </div>
                             </div>
-
-                            <div class="form-group">
-                                <label>End Date </label>
-                                <input type="date" name="leave_date" class="form-control" />
                             </div>
+                            <div class="col-md-12">
 
-                            <div class="form-group">
-                                <label>Add Description </label>
-                                <textarea name="add description" class="form-control" rows="6" placeholder="Add description"></textarea>
-                            </div>
+                            <label for="task">Task Details:</label>
 
-
+                            <textarea id="task" name="taskdetail" rows="4" cols="50">
+                            </textarea></div>
                         </div>
                         <!-- /.card-body -->
 

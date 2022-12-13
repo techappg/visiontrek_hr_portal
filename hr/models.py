@@ -7,7 +7,13 @@ status_choices = (
     ("Selected", 'Selected'),
     ("Rejected", 'Rejected'),)
 
-
+task_choice = (
+    ("learning","learning"),
+    ("development","development"),
+    ("task","task"),
+    ("project","project"),
+    ("deployment","deployment")
+)
 
 
 class Office_meeting(models.Model):
@@ -61,3 +67,9 @@ class LeaveReportEmployee(models.Model):
     leave_status = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class Task(models.Model):
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    task_type = models.CharField(max_length=50,choices=task_choice)
+    screenshot = models.FileField(upload_to='task/', max_length=100,null=True,blank=True)
+    detail = models.TextField()
