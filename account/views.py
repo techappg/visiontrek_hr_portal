@@ -45,9 +45,10 @@ def doLogin(request):
 def punchin(request):
     print("helllooooo")
     
-    date_time_obj = request.POST["time"]
+    date_time_obj = request.POST.get("time")
     print("aaaaa",date_time_obj)
     status = request.POST.get('punchin') 
+
     
     print(status)
     print(date_time_obj)
@@ -62,13 +63,50 @@ def punchin(request):
     # datetime_object = datetime.strptime(date_time_obj, '%a %b %m %Y %I:%p:%S %X %Z%z%f')
     print('dateeeee',datetime_object)
     
-    
-    punch = Punch.objects.create(punch_in=datetime_object,punch_date=date_obj,marked=status)
+   
+
+    punch = Punch.objects.create(punch_in=datetime_object,punch_date=date_obj, user = request.user)
+    if status == "in":
+        punch.marked == True 
+
+    punch.save()
+
     
     date_list = list(date_time_obj)
     return JsonResponse(json.dumps(date_time_obj),content_type="application/json",safe=False)
 
 
+@csrf_exempt
+def punchout(request):
+    
+    
+    date_time_obj = request.POST.get("time")
+    
+    status = request.POST.get('punchout') 
 
+    time_obj = date_time_obj[16:24:1]
+    date_obj = date_time_obj[0:15]
+    # a = datetime.strptime(date_obj,'%a %b %m %Y')
+    print('aaa',time_obj)
+
+    print('a',date_obj)
+  
+    datetime_object = datetime.strptime(time_obj, '%H:%M:%S')
+    # datetime_object = datetime.strptime(date_time_obj, '%a %b %m %Y %I:%p:%S %X %Z%z%f')
+    print('dateeeee',datetime_object)
+    
+   
+
+    punch = Punch.objects.filter(user=request.user).last()
+    print('last',punch)
+    punch.punch_out = datetime_object
+    if status == "out":
+        punch.marked == False 
+
+    punch.save()
+
+    
+    date_list = list(date_time_obj)
+    return JsonResponse(json.dumps(date_time_obj),content_type="application/json",safe=False)
 
     '2022-12-12 04:39:05.182486'

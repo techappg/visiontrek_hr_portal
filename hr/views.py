@@ -55,8 +55,8 @@ def dashboard(request):
     return render(request,'employee/base.html')
 
 def employee_home(request):
-    punch = Punch.objects.filter(user=request.user).first()
-    print(punch)
+    punch = Punch.objects.filter(user=request.user)
+    
     context = { 
         'punch':punch
     }

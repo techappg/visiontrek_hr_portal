@@ -25,11 +25,11 @@
 {% block punch %}
 <form  method="POST">
     {% csrf_token %}
-  
+  {% if punch.marked == "in" %}
 <button type="button" id='punch' name="punchin" value="in" class="btn btn-danger" onclick="out()" >Punchin</button>
-
-<button type="button" id='punch_out' name="btn" value="out" class="btn btn-danger" onclick="out()" >Punchout</button>
-
+{% else %}
+<button type="submit" id='punch_out' name="btn" value="out" class="btn btn-danger" onclick="punchout()" >Punchout</button>
+{% endif %}
   </form>
   {% endblock punch %}
 {% block main_content %}
@@ -52,8 +52,8 @@
   <td>{{i.punch_date}}</td>
 
   <td id="punch_in">{{i.punch_in}}</td>
-  <td></td>
-  <td></td>
+  <td>{{i.punch_out}}</td>
+  <td>{{i.punch_out}}</td>
 
   </tr>
   {% endfor %}
@@ -67,11 +67,13 @@
 function out(){
        let btnShow = document.querySelector('button')
        
-       let output = document.getElementById('punch')
+       let output = document.getElementById('punch').value
+       console.log(output)
+
        alert(`${output}`)
        btnShow.style.display = 'none';
        let today = new Date();
-        alert("inside")
+        alert(`${today}`)
         let month = today.getMonth() + 1;
         let year = today.getFullYear();
         let date = today.getDate();
@@ -85,7 +87,7 @@ function out(){
         let current_time = `${hours}:${minutes}:${seconds}`;
       document.getElementById("punch").classList.add("d-none");
         
-        date_dic={"time":today}
+        date_dic={"time":today,"punchin":output}
 
         $.ajax({
           url:'http://127.0.0.1:8000/punchin/',
@@ -98,12 +100,31 @@ function out(){
       document.getElementById("punch").classList.add("d-none");
       
       })
-      
+    };
 
+function punchout(){
+  alert('punchout')
+  let output = document.getElementById('punch_out').value
+  let today = new Date();
+  
+        
+  date_dic={"time":today,"punchout":output}
 
-     
+  $.ajax({
+    url:'http://127.0.0.1:8000/punchout/',
+    type: 'POST',
+    data:date_dic
+  })
+  .done(function(response){
+    alert('done')
+    console.log("ok")
+  document.getElementById("punch").classList.add("d-none");
+  
+  })
 
 }
+
+
 
 </script>
 {% endblock custom_js %}

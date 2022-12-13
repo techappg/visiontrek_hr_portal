@@ -6,7 +6,7 @@ urlpatterns = [
     path('',doLogin,name='login'),
     path('employee_home',employee_home,name='employee_home'),
     path('punchin/',punchin,name='punchin'),
-
+    path('punchout/',punchin,name='punchout'),
 
 #  password reset urls
 
