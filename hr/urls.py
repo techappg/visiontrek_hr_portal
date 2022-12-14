@@ -20,15 +20,12 @@ urlpatterns = [
     path('add_student/', AddUser, name="adduser"),
     path('emp_leave_apply/', Empl_leave_apply, name="emp_leave_apply"),
     path('add_task/', add_task, name="add_task"),
-    
+    path('hr_leave_view/', hr_leave_view, name="hr_leave_view"),
+    path('emp_leave_view/', emp_leave_view, name="emp_leave_view"),
+    path('python_team/<status>', python_team, name="python_team"),
+
     path('emp_leave_approve/<leave_id>/', emp_leave_approve, name="emp_leave_approve"),
     path('emp_leave_reject/<leave_id>/', emp_leave_reject, name="emp_leave_reject"),
-
-
-
-
-
-
     
     
     

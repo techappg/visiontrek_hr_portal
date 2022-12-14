@@ -18,6 +18,13 @@ from . models import task_choice
 #         Interview_meeting.objects.filter(id=id).update(status=status)
    
 #     return redirect('showhrdashboard')
+def hr_leave_view(request):
+    leaves = LeaveReportEmployee.objects.all()
+    context = {
+        "leaves": leaves
+    }
+    return render(request,'emp_leave_view.html',context)
+
 def Empl_leave_apply(request):
     user_obj = User.objects.get(username=request.user)
     leave_obj = LeaveReportEmployee.objects.filter(emp_id=user_obj)
@@ -35,20 +42,31 @@ def Empl_leave_apply(request):
 
     return render(request,'employee/emp_apply_leave.html',{'leaves':leave_obj})
 
+def python_team(request,status):
+    user = Domain_name.objects.get(name=status)
+    user_obj = User.objects.filter(domain_id=user.id)
+    
+    return render(request,'employee/python_team.html',{'user':user_obj})
 
+def emp_leave_view(request):
+    user_obj = User.objects.get(username=request.user)
+
+    leave_obj = LeaveReportEmployee.objects.filter(emp_id=user_obj)
+    
+    return render(request,'employee/emp_leave_view.html',{'leaves':leave_obj})
 
 def emp_leave_approve(request, leave_id):
     leave = LeaveReportEmployee.objects.get(id=leave_id)
     leave.leave_status = 1
     leave.save()
-    return redirect('emp_leave_view')
+    return redirect('hr_leave_view')
 
 
 def emp_leave_reject(request, leave_id):
     leave = LeaveReportEmployee.objects.get(id=leave_id)
     leave.leave_status = 2
     leave.save()
-    return redirect('emp_leave_view')
+    return redirect('hr_leave_view')
 
 
 

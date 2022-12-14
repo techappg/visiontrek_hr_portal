@@ -110,10 +110,10 @@
               <div class="dropdown">
                 <i class="nav-icon fas fa-th"><button class="dropbtn">Team</button></i>
                 <div class="dropdown-content">
-            <a href="#" class="nav-link {% if request.path == create_meeting %} active {% endif %}">Python</a>
-            <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">Java </a>
-            <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">React </a>
-            <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">BDE </a>                
+            <a href="{% url 'python_team' 'python' %}" class="nav-link {% if request.path == create_meeting %} active {% endif %}">python</a>
+            <a href="{% url 'python_team' 'java' %}" class="nav-link {% if request.path == admin_home %} active {% endif %}">java </a>
+            <a href="{% url 'python_team' 'react' %}" class="nav-link {% if request.path == admin_home %} active {% endif %}">react </a>
+            <a href="{% url 'python_team' 'c++' %}" class="nav-link {% if request.path == admin_home %} active {% endif %}">c++ </a>                
                 </div>
               </div>
              
@@ -128,7 +128,7 @@
               <button class="dropbtn">Leaves</button>
               <div class="dropdown-content">
           <a href="{% url 'emp_leave_apply' %}" class="nav-link {% if request.path == create_meeting %} active {% endif %}">Apply Leave</a>
-          <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">Leave Details </a>
+          <a href="{% url 'emp_leave_view' %}" class="nav-link {% if request.path == admin_home %} active {% endif %}">Leave Details </a>
                 
               </div>
             </div>

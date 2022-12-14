@@ -7,6 +7,7 @@ urlpatterns = [
     path('employee_home',employee_home,name='employee_home'),
     path('punchin/',punchin,name='punchin'),
     path('punchout/',punchout,name='punchout'),
+    path('notifi',index,name='notifi'),
 
 #  password reset urls
 
