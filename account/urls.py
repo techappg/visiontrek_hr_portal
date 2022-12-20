@@ -8,6 +8,11 @@ urlpatterns = [
     path('punchin/',punchin,name='punchin'),
     path('punchout/',punchout,name='punchout'),
     path('notifi',index,name='notifi'),
+    path('emp_profile',emp_profile,name='emp_profile'),
+    path('user_fcmtoken/',user_fcmtoken,name='user_fcmtoken'),
+    path('firebase-messaging-sw.js',showFirebaseJS,name="show_firebase_js"),
+
+
 
 #  password reset urls
 

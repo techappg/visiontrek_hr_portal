@@ -13,7 +13,7 @@
                     <!-- general form elements -->
                     <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Add Task</h3>
+                        <h3 class="card-title">Add Project</h3>
                     </div>
                     <!-- /.card-header -->
 
@@ -42,47 +42,54 @@
                                 </div>
                                 {% endif %}
                             
-                    <form method="POST" action="{% url 'add_task' %}?id={{user.id}}" enctype="multipart/form-data">
+                    <form method="POST" action="{% url 'add_project' %}?id={{user.id}}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="card-body">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Select Task Type <span class="text-red">*</span></label>
-                                    <select class="form-control form-select select2" data-bs-placeholder="Select" name="task_val" >
-                                        <option value="" selected>Select task </option>
-                            
-                                        {%  for i in choice %}
-                                          <option value="{{i}}">{{i}}</option>
-                                  
-                                          {% endfor %}
-                                          
-                                        </select>
+                                    <label class="form-label">Project title <span class="text-red">*</span></label>
+                                    <input type="text" class="form-control" id="customFile" name="title" >
+                                   
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                             
                                 <div class="form-group">
-                                    <label class="form-label" for="customFile">Choose file</label>
-                                    
-                                    
-                                    <input type="file" class="form-control" id="customFile" name="imagesfiles" >
-        
-                                   
-        
+                                <label>Start Date</label>
+                            <input type="date" class="form-control" placeholder="Select Date" name="start_date" required="">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                            
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <div class="form-group mb-0">
+                                        <div class="radio">
+                                            <label><input type="radio" name="status" value= 1 onclick="text1()"> Active</label>
+                                        </div>
+                                        <div class="radio">
+                                            <label><input type="radio" name="status" value=0 onclick="text2()" checked> Completed</label>
+                                        </div>
+                                        <div class="col-xl-3 col-xxl-6 col-md-6 mb-3" id="mycode">
+                                            <label>End Date</label>
+                                            <input type="date" class="form-control-lg" placeholder="Select Date" name="End_date" id='End_date' required>
+                                        </div>
+                                     </div>
                                 </div>
                             </div>
                             </div>
                             <div class="col-md-12">
 
-                            <label for="task">Task Details:</label>
-
-                            <textarea id="task" name="taskdetail" rows="4" cols="50">
-                            </textarea></div>
+                                <div class="form-group">
+                                    <label>Project Details</label>
+                                    <textarea class="form-control" rows="4" id="comment" name="task_details" required=""></textarea>
+                                </div>
                         </div>
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Create Task</button>
+                    <button type="submit" class="btn btn-rounded btn-info  btn-md">SUBMIT PROJECT DETAILS</button>
+                        
                         </div>
 
                     </form>
@@ -102,5 +109,18 @@
   {% endblock main_content %}
 
 {% block custom_js %}
+<script>
+    function text1() {
+        document.getElementById("mycode").classList.add("d-none");   
+        document.getElementById("mycode").classList.remove("d-block");   
+        document.getElementById('End_date').required = false; 
+    }
 
+    function text2() {
+        document.getElementById("mycode").classList.add("d-block"); 
+        document.getElementById("mycode").classList.remove("d-none");   
+        document.getElementById('End_date').required = true; 
+    }
+</script>
 {% endblock custom_js %}
+

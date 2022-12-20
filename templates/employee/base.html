@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="{% static "summernote/summernote-bs4.css" %}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  
 
     {% comment %} For Custom CSS {% endcomment %}
 
@@ -70,12 +71,12 @@
         
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
           
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'emp_profile' %}" class="dropdown-item">
             <i class="fas fa-user-edit mr-2"></i> Update Profile
           </a>
 
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
+          <a href="" class="dropdown-item">
             <i class="fas fa-power-off mr-2"></i> Logout
           </a>
           <div class="dropdown-divider"></div>
@@ -153,10 +154,89 @@
 <script src="{% static 'dist/js/pages/dashboard.js'  %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'dist/js/demo.js'  %}"></script>
-
+ <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-messaging.js"></script>
 {% comment %} For Custom JS {% endcomment %}
 {% block custom_js %}
 <script>
+  var firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "FIREBASE_AUTH_URL",
+      databaseURL: "FIREBASE_DATABASE_URL",
+      projectId: "FIREBASE_PROJECT_ID",
+      storageBucket: "FIREBASE_STORAGE_BUCKET_URL",
+      messagingSenderId: "FIREBASE_SENDER_ID",
+      appId: "FIREBASE_APP_ID",
+      measurementId: "FIREBASE_MEASUREMENT_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const messaging=firebase.messaging();
+
+  function IntitalizeFireBaseMessaging() {
+      messaging
+          .requestPermission()
+          .then(function () {
+              console.log("Notification Permission");
+              return messaging.getToken();
+          })
+          .then(function (token) {
+              console.log("Token : "+token);
+              sendToServer(token);
+          })
+          .catch(function (reason) {
+              console.log(reason);
+          });
+  }
+
+  messaging.onMessage(function (payload) {
+      console.log(payload);
+      const notificationOption={
+          body:payload.notification.body,
+          icon:payload.notification.icon
+      };
+
+      if(Notification.permission==="granted"){
+          var notification=new Notification(payload.notification.title,notificationOption);
+
+          notification.onclick=function (ev) {
+              ev.preventDefault();
+              window.open(payload.notification.click_action,'_blank');
+              notification.close();
+          }
+      }
+
+  });
+  messaging.onTokenRefresh(function () {
+      messaging.getToken()
+          .then(function (newtoken) {
+              console.log("New Token : "+ newtoken);
+              sendToServer(newtoken);
+          })
+          .catch(function (reason) {
+              console.log(reason);
+          })
+  });
+  function sendToServer(token){
+    $.ajax({
+      url:'http://127.0.0.1:8000/user_fcmtoken/',
+           type:'POST',
+           data:{token:token},
+       })
+       .done(function(response){
+           if(response=="True"){
+               console.log("Token Save")
+           }
+           else{
+               console.log("Error in Token Save")
+           }
+       });
+}
+IntitalizeFireBaseMessaging();
+</script>
+<script>
+  
+
   var dropdown = document.getElementsByClassName("dropdown-btn");
 var i;
 

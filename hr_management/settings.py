@@ -142,6 +142,9 @@ EMAIL_USE_TLS = True
 
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
 
+AUTH_USER_MODEL='account.User'
+
+
 # AUTHENTICATION_BACKENDS = ['account.EmailBackEnd.EmailBackEnd']
 
 CRONJOBS = [

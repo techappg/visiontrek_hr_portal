@@ -25,11 +25,15 @@
 {% block punch %}
 <form  method="POST">
     {% csrf_token %}
-  {% if punch.marked == "in" %}
+  
+  {% if mark == True %}
 <button type="button" id='punch' name="punchin" value="in" class="btn btn-danger" onclick="out()" >Punchin</button>
 {% else %}
+
 <button type="submit" id='punch_out' name="btn" value="out" class="btn btn-danger" onclick="punchout()" >Punchout</button>
 {% endif %}
+
+
   </form>
   {% endblock punch %}
 {% block main_content %}
@@ -53,7 +57,7 @@
 
   <td id="punch_in">{{i.punch_in}}</td>
   <td>{{i.punch_out}}</td>
-  <td>{{i.punch_out}}</td>
+  <td>{{out}}</td>
 
   </tr>
   {% endfor %}
@@ -85,8 +89,7 @@ function out(){
         let minutes = today.getMinutes();
         let seconds = today.getSeconds();
         let current_time = `${hours}:${minutes}:${seconds}`;
-      document.getElementById("punch").classList.add("d-none");
-        
+    
         date_dic={"time":today,"punchin":output}
 
         $.ajax({
@@ -97,8 +100,7 @@ function out(){
       })
       .done(function(response){
         console.log("ok")
-      document.getElementById("punch").classList.add("d-none");
-      
+  
       })
     };
 
@@ -118,7 +120,7 @@ function punchout(){
   .done(function(response){
     alert('done')
     console.log("ok")
-  document.getElementById("punch_out").classList.add("d-none");
+  
   
   })
 

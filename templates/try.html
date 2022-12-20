@@ -1,120 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body {
-  font-family: "Lato", sans-serif;
-}
-
-/* Fixed sidenav, full height */
-.sidenav {
-  height: 100%;
-  width: 200px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  padding-top: 20px;
-}
-
-/* Style the sidenav links and the dropdown button */
-.sidenav a, .dropdown-btn {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 20px;
-  color: #818181;
-  display: block;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  outline: none;
-}
-
-/* On mouse-over */
-.sidenav a:hover, .dropdown-btn:hover {
-  color: #f1f1f1;
-}
-
-/* Main content */
-.main {
-  margin-left: 200px; /* Same as the width of the sidenav */
-  font-size: 20px; /* Increased text to enable scrolling */
-  padding: 0px 10px;
-}
-
-/* Add an active class to the active dropdown button */
-.active {
-  background-color: green;
-  color: white;
-}
-
-/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-.dropdown-container {
-  display: none;
-  background-color: #262626;
-  padding-left: 8px;
-}
-
-/* Optional: Style the caret down icon */
-.fa-caret-down {
-  float: right;
-  padding-right: 8px;
-}
-
-/* Some media queries for responsiveness */
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    $(document).ready(function(){
+			$("#sidebarCollapse").on('click', function(){
+				$("#sidebar").toggleClass('active');
+			});
+		});
+  </script>
 </head>
 <body>
-
-<div class="sidenav">
-  <a href="#about">About</a>
-  <a href="#services">Services</a>
-  <a href="#clients">Clients</a>
-  <a href="#contact">Contact</a>
-  <button class="dropdown-btn">User 
-    <i class="fa fa-caret-down"></i>
-  </button>
-  <div class="dropdown-container">
-    <a href="#">Add User 1</a>
-    <a href="#">User Details 2</a>
+  <div class="wrapper">
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>BBBOOTSTRAP</h3>
+        <hr>
+      </div>
+      <ul class="list-unstyled components">
+        <p>MENUS</p>
+        <li> <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Dashboard</a>
+          <ul class="collapse list-unstyled" id="homeSubmenu">
+            <li> <a href="#">Dashboard1</a> </li>
+            <li> <a href="#">Dashboard2</a> </li>
+            <li> <a href="#">Dashboard3</a> </li>
+          </ul>
+        </li>
+        <li> <a href="#">Users</a> </li>
+        <li> <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Subscribers</a>
+          <ul class="collapse list-unstyled" id="pageSubmenu">
+            <li> <a href="#">Active</a> </li>
+            <li> <a href="#">Idle</a> </li>
+            <li> <a href="#">Non Active</a> </li>
+          </ul>
+        </li>
+        <li> <a href="#">Timeline</a> </li>
+        <li> <a href="#">Live Chat</a> </li>
+        <li> <a href="#">Likes</a> </li>
+        <li> <a href="#">Comments</a> </li>
+      </ul>
+      <ul class="list-unstyled CTAs">
+        <li> <a href="#" class="download">Subscribe</a> </li>
+      </ul>
+    </nav>
+    <div class="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light"> <button type="button" id="sidebarCollapse"
+          class="btn btn-info"> <i class="fa fa-align-justify"></i> </button> <button class="navbar-toggler" type="button"
+          data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+          aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active"> <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item"> <a class="nav-link" href="#">Features</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#">Pricing</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#">Contact</a> </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="content-wrapper">
+        <h2>Collapsible Sidebar Using Bootstrap 4</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+       
+          consequat id. Sollicitudin tempor id eu nisl nunc mi.
+          .</p>
+        <div class="line"></div>
+      </div>
+    </div>
   </div>
-  <a href="#contact">Search</a>
-</div>
-
-<div class="main">
-  <h2>Sidebar Dropdown</h2>
-  <p>Click on the dropdown button to open the dropdown menu inside the side navigation.</p>
-  <p>This sidebar is of full height (100%) and always shown.</p>
-  <p>Some random text..</p>
-</div>
-
-<script>
-/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-var dropdown = document.getElementsByClassName("dropdown-btn");
-var i;
-
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
-    }
-  });
-}
-</script>
-
 </body>
-</html> 
+</html>

@@ -37,6 +37,7 @@ class Pos_choice(models.Model):
 class User(AbstractUser):
     first_name = models.CharField(max_length=150,null=True,blank=True)
     last_name = models.CharField(max_length=150,null=True,blank=True)
+    fcm_token = models.TextField(default="")
     email = models.EmailField("email address",null=True,blank=True)
     user_type_data = ((1, "Admin"), (2, "Hr"), (3, "Employee"))
     user_type = models.CharField(default=1, choices=user_type_data, max_length=10, null=True, blank=True)

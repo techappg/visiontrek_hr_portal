@@ -71,5 +71,21 @@ class LeaveReportEmployee(models.Model):
 class Task(models.Model):
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
     task_type = models.CharField(max_length=50,choices=task_choice)
-    screenshot = models.FileField(upload_to='task/', max_length=100,null=True,blank=True)
+    screenshot = models.ImageField( upload_to='task/',null=True,blank=True)
     detail = models.TextField()
+
+class Project(models.Model):
+    title = models.CharField(max_length=100,null=True,blank=True)
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    start_date = models.DateField(null=True,blank=True)
+    status = models.BooleanField(default=False,null=True,blank=True)
+    detail = models.TextField(max_length=200,null=True,blank=True)
+
+
+
+class NotificationEmp(models.Model):
+    emp_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    
