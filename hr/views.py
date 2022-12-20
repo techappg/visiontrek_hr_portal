@@ -7,8 +7,12 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives,send_mail,EmailMessage
 from .forms import AddUserForm
-from datetime import datetime
+from datetime import datetime, date
+from django.views.decorators.csrf import csrf_exempt
+import requests
+from django.http import HttpResponse
 from . models import task_choice
+import json
 # Create your views here.
 
 
@@ -68,15 +72,32 @@ def emp_leave_reject(request, leave_id):
     leave.save()
     return redirect('hr_leave_view')
 
-
+def emp_task_view(request):
+    task_obj = Task.objects.filter(user_id=request.user.id)
+    context = {
+        "task":task_obj
+    }
+    return render(request,'employee/show_task.html',context)
 
 def dashboard(request):
     return render(request,'employee/base.html')
 
 def employee_home(request):
     punch = Punch.objects.filter(user=request.user)
+    punch_obj = Punch.objects.filter(user=request.user).last()
+    a = punch_obj.marked
+    b = punch_obj.punch_out
+    c = punch_obj.punch_in
+    if b!= None:
+        d =datetime.combine(date.today(), b) - datetime.combine(date.today(), c)
+
+        print(d)
+    else:
+        d = None
     context = { 
-        'punch':punch
+        'punch':punch,
+        'mark':a,
+        'out':d
     }
     
     return render(request,'employee/emp_dashboard.html',context)
@@ -85,8 +106,9 @@ def add_task(request):
     if request.method=="POST":
   
         task = request.POST.get("task_val")
-        file = request.POST.get("file")
+        file = request.FILES.get('imagesfiles')
         detail = request.POST.get("taskdetail")
+        print('hhhhhh',file)
         task_obj = Task.objects.create(task_type=task,screenshot=file,detail=detail,user_id=request.user)
         
 
@@ -358,4 +380,61 @@ def edit_data(request):
 
     return render(request,'edit_data.html',context)
 
+def hr_send_notification_emp(request):
+    user = User.objects.all()
+    return render("employee/emp_notification.html",{"user":user})
 
+@csrf_exempt
+def send_emp_notification(request):
+    message=request.POST.get("message")
+    emp=User.objects.get(id=request.user.id)
+    token=emp.fcm_token
+    url="https://fcm.googleapis.com/fcm/send"
+    body={
+        "notification":{
+            "title":"Student Management System",
+            "body":message,
+            "click_action": "https://studentmanagementsystem22.herokuapp.com/student_all_notification",
+            "icon": "http://studentmanagementsystem22.herokuapp.com/static/dist/img/user2-160x160.jpg"
+        },
+        "to":token
+    }
+    headers={"Content-Type":"application/json","Authorization":"key=SERVER_KEY_HERE"}
+    data=requests.post(url,data=json.dumps(body),headers=headers)
+    notification=NotificationEmp(emp_id=User,message=message)
+    notification.save()
+    print(data.text)
+    return HttpResponse("True")
+
+#  add project by employee
+def add_project(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        start_date = request.POST.get('start_date')
+        status = request.POST.get('status')
+        print(status)
+        detail = request.POST.get("task_details")
+        
+        project_obj = Project.objects.create(title=title,start_date=start_date,status=status,detail=detail,user_id=request.user)    
+    return render(request,'employee/add_project.html')
+
+def show_project(request):
+    project_obj = Project.objects.filter(user_id=request.user.id)
+    context = {
+        "project":project_obj
+    }
+    return render(request,'employee/all_project.html',context)
+
+def active_project(request):
+    project_obj = Project.objects.filter(user_id=request.user.id,status=1)
+    context = {
+        'project':project_obj
+    }
+    return render(request,'employee/active_project.html',context)
+
+def complete_project(request):
+    project_obj = Project.objects.filter(user_id=request.user.id,status=0)
+    context = {
+        'project':project_obj
+    }
+    return render(request,'employee/complete_project.html',context)
