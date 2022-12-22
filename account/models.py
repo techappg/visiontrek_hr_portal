@@ -60,3 +60,10 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class Reporting(models.Model):
+    report_to = models.ForeignKey(User, on_delete=models.CASCADE,related_name='Reporting_to')
+    new_reporting_to = models.ForeignKey(User, on_delete=models.CASCADE,related_name='New_reporting_to')
+    report_from = models.DateField(auto_now=False)
+    report_till = models.DateField(auto_now=False)
+    report_by = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True,related_name='Reporting_by')

@@ -11,11 +11,15 @@ urlpatterns = [
     path('emp_profile',emp_profile,name='emp_profile'),
     path('user_fcmtoken/',user_fcmtoken,name='user_fcmtoken'),
     path('firebase-messaging-sw.js',showFirebaseJS,name="show_firebase_js"),
-
-
+    path('reporting/',reporting,name="reporting"),
+    path('emp_fcm_save/',emp_fcm_save,name='emp_fcm_save'),
+    path('hr_fcm_save/',hr_fcm_save,name='hr_fcm_save'),
+    path('send/',send,name='send'),
+    path('send_hr_notification/',send_hr_notification,name='send_hr_notification'),
+    path('send_emp_notification/',send_emp_notification,name='send_emp_notification'),
+    path('new/',new,name='new'),
 
 #  password reset urls
-
 
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),
 

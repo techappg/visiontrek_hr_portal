@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from account.EmailBackEnd import EmailBackEnd
 from django.views.decorators.csrf import csrf_exempt
-from hr.models import Punch
+from hr.models import *
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import json
 from datetime import datetime
@@ -80,12 +80,18 @@ def showFirebaseJS(request):
 
     return HttpResponse(data,content_type="text/javascript")
 
+def reporting(request):
+
+    return render(request,'employee/manage_reporting.html')
+
+
+
 @csrf_exempt
 def punchin(request):
     print("helllooooo")
     
     date_time_obj = request.POST.get("time")
-    print("aaaaa",date_time_obj)
+
     status = request.POST.get('punchin') 
 
     
@@ -111,9 +117,9 @@ def punchin(request):
 
     punch.save()
 
+    redirect('employee_home')
     
-    date_list = list(date_time_obj)
-    return JsonResponse(json.dumps(date_time_obj),content_type="application/json",safe=False)
+
 
 
 @csrf_exempt
@@ -147,16 +153,16 @@ def punchout(request):
         print(punch.marked)
     
 
+    redirect('employee_home')
     
-    date_list = list(date_time_obj)
-    return JsonResponse(json.dumps(date_time_obj),content_type="application/json",safe=False)
+    
 
 
 
 
 def send_notification(registration_ids, message_title, message_desc):
     print("enterrree")
-    fcm_api = "AAAAmPVuHa0:APA91bFG81PmXDKWu_HSNXqYbsPmJtrE4GxhQdIA3BEWxWgucmQr9H7egbnQwGstHBZh0G99DKcO8mnmhR8lSDxTUxznQYTkSEQSBaaPfN8V9nnLkfhdniKJffpXD4PettPcin2tuocq"
+    fcm_api = "AAAAEzrWrBo:APA91bFb1gozb9_NNJ6XYQxfCrUsmZQIjGZDYRbInRELckVwcuK3DwFB6cP-SuWzC7a4-gYe_r1Sg9eNj6pDEsMSyZZ_C5Q4U4LDrlfST-ojxKmg1YBnBtahhRSRE8wT8rNWltfgnPag"
     url = "https://fcm.googleapis.com/fcm/send"
 
     headers = {
@@ -190,3 +196,125 @@ def index(request):
     send_notification(registration_ids, message_title, message_desc)
     print("fkfkfk")
     return HttpResponse("NOTIFIUCSTN SEBDDD")
+
+@csrf_exempt
+def emp_fcm_save(request):
+    token=request.POST.get("token")
+    print('token')
+    try:
+        emp=User.objects.get(id=request.user.id)
+        emp.fcm_token=token
+        emp.save()
+        return HttpResponse("True")
+    except:
+        return HttpResponse("False")
+@csrf_exempt
+def hr_fcm_save(request):
+    token=request.POST.get("token")
+    print('token')
+    try:
+        emp=User.objects.get(id=request.user.id)
+        emp.fcm_token=token
+        emp.save()
+        return HttpResponse("True")
+    except:
+        return HttpResponse("False")
+
+def send(request):
+    tkn = User.objects.get(id=request.user.id)
+
+    resgistration  = [tkn.fcm_token]
+    print(resgistration)
+    send_notification(resgistration , 'Manik push notification test','notification trial')
+    return HttpResponse("sent")
+
+@csrf_exempt
+def send_hr_notification(request):
+    
+    a_date=request.POST.get("aply_date")
+    message=request.POST.get("message")
+    print(a_date)
+    print(message)
+    user_obj=User.objects.get(id=10)
+    a = user_obj.id
+    token=user_obj.fcm_token
+    print(token)
+    fcm_api = "AAAAEzrWrBo:APA91bFb1gozb9_NNJ6XYQxfCrUsmZQIjGZDYRbInRELckVwcuK3DwFB6cP-SuWzC7a4-gYe_r1Sg9eNj6pDEsMSyZZ_C5Q4U4LDrlfST-ojxKmg1YBnBtahhRSRE8wT8rNWltfgnPag"
+
+    url="https://fcm.googleapis.com/fcm/send"
+    body={
+        "notification":{
+            "title":"Leave apply by employee",
+            "body":message,
+            "click_action": "http://127.0.0.1:8000/emp_leave_view/",
+            "icon": "http://studentmanagementsystem22.herokuapp.com/static/dist/img/user2-160x160.jpg"
+        },
+        "to":token
+    }
+    headers={"Content-Type":"application/json","Authorization":"key="+fcm_api}
+    data=requests.post(url,data=json.dumps(body),headers=headers)
+    print(f"hereeee")
+    notification=NotificationEmp(emp_id_id=a,message=message)
+    notification.save()
+    print(data.text)
+    return HttpResponse("True")
+# emp_name text
+
+@csrf_exempt
+def new(request):
+    if request.method == "POST":
+        print("inside bro")
+        id_emp = request.POST.get("id_emp")
+        print("empiddddd",id_emp)
+        emp_name=request.POST.get("emp_name")
+        text=request.POST.get("text")
+        user_obj=User.objects.get(id=id_emp)
+        token=user_obj.fcm_token
+        print(token)
+        fcm_api = "AAAAEzrWrBo:APA91bFb1gozb9_NNJ6XYQxfCrUsmZQIjGZDYRbInRELckVwcuK3DwFB6cP-SuWzC7a4-gYe_r1Sg9eNj6pDEsMSyZZ_C5Q4U4LDrlfST-ojxKmg1YBnBtahhRSRE8wT8rNWltfgnPag"
+
+        url="https://fcm.googleapis.com/fcm/send"
+        body={
+            "notification":{
+                "title":"Leave apply by employee",
+                "body":text,
+                "click_action": "http://127.0.0.1:8000/send_emp_notification/",
+            },
+            "to":token
+        }
+        headers={"Content-Type":"application/json","Authorization":"key="+fcm_api}
+        data=requests.post(url,data=json.dumps(body),headers=headers)
+        
+        print(data.text)
+        return HttpResponse("True")
+
+
+@csrf_exempt
+def send_emp_notification(request):
+    if request.method == "POST":
+        print("helllooooooooooooooooooooooooooo")
+    id_emp = request.POST.get("id_emp")
+    print("empiddddd",id)
+    emp_name=request.POST.get("emp_name")
+
+    text=request.POST.get("text")
+
+    user_obj=User.objects.get(id=id_emp)
+    token=user_obj.fcm_token
+    print(token)
+    fcm_api = "AAAAEzrWrBo:APA91bFb1gozb9_NNJ6XYQxfCrUsmZQIjGZDYRbInRELckVwcuK3DwFB6cP-SuWzC7a4-gYe_r1Sg9eNj6pDEsMSyZZ_C5Q4U4LDrlfST-ojxKmg1YBnBtahhRSRE8wT8rNWltfgnPag"
+
+    url="https://fcm.googleapis.com/fcm/send"
+    body={
+        "notification":{
+            "title":"Leave apply by employee",
+            "body":text,
+            "click_action": "http://127.0.0.1:8000/send_emp_notification/",
+        },
+        "to":token
+    }
+    headers={"Content-Type":"application/json","Authorization":"key="+fcm_api}
+    data=requests.post(url,data=json.dumps(body),headers=headers)
+    
+    print(data.text)
+    return HttpResponse("True")

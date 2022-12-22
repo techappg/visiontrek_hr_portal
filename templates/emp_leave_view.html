@@ -10,7 +10,7 @@
 
 <section class="content">
         <div class="container-fluid">
-
+<form action="" method="post">
             <div class="row">
                 <div class="col-md-12">
                     <!-- general form elements -->
@@ -45,8 +45,8 @@
                                     <td>{{ leave.created_at }}</td>
                                     <td>
                                         {% if leave.leave_status == 0 %}
-                                            <a href="{% url 'emp_leave_approve' leave_id=leave.id %}" class="btn btn-success">Approve</a>
-                                            <a href="{% url 'emp_leave_reject' leave_id=leave.id %}" class="btn btn-danger">Reject</a>
+                                            <a href="{% url 'emp_leave_approve' leave_id=leave.id %}" class="btn btn-success approve">Approve</a>
+                                            <a href="{% url 'emp_leave_reject' leave_id=leave.id %}" class="btn btn-danger reject">Reject</a>
                                         {% elif leave.leave_status == 1 %}
                                             <button class="btn btn-warning" disabled="disabled">Approved</button>
                                         {% else %}
@@ -59,6 +59,8 @@
                                 {% endfor %}
 
                             </table>
+             <input type="hidden" name="student_id" class="form-control" id="student_id">
+             <span id="name_span"></span>
                         </div>
                     
                     </div>
@@ -66,7 +68,7 @@
 
                 </div>
             </div>
-
+</form>
         </div><!-- /.container-fluid -->
       </section>
 
@@ -74,8 +76,34 @@
 
   {% endblock main_content %}
 
-  {% comment %} Custom JS to Identify the Reply and Post Reply {% endcomment %}
 
   {% block custom_js %}
+<script>
+    $(".approve").click(function(){
+        var id_emp=$(this).parents("tr").children("td:eq(1)").text();
+        alert('inside')
+        var emp_name=$(this).parents("tr").children("td:eq(2)").text();
+        var text = "Accepted";
+        
 
+        sendNotification(id_emp,emp_name,text);
+    });
+  
+    function sendNotification(id_emp,emp_name,text){
+             $.ajax({
+              url:'http://127.0.0.1:8000/new/',
+              type:'POST',
+              data:{id_emp:id_emp,emp_name:emp_name,text:text},
+          })
+          .done(function(response){
+              if(response=="True"){
+                  alert("Message Sent");
+              }
+              else{
+                  alert("Failed to Send Message");
+              }
+          });
+    }
+  
+</script>
   {% endblock custom_js %}

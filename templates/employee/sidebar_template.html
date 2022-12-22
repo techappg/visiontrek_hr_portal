@@ -82,8 +82,9 @@
             
        
             <div class="sidenav" >
-                <button class="dropdown-btn"><i class="nav-icon fas fa-th"></i>Team 
-                  <i class="fa fa-caret-down"></i>
+                <button class="dropdown-btn"><i class="fa fa-users" aria-hidden="true"></i>
+                  Team 
+                  <i class="fa-solid fa-people-group"></i>
                 </button>
               <div class="dropdown-container">
                 <a href="{% url 'python_team' 'python' %}">Python</a>
@@ -93,7 +94,8 @@
               </div>
             </div>
             <div class="sidenav" >
-              <button class="dropdown-btn"><i class="nav-icon fas fa-th"></i>Leaves 
+              <button class="dropdown-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+                Leaves 
                 <i class="fa fa-caret-down"></i>
               </button>
             <div class="dropdown-container">
@@ -104,7 +106,8 @@
             </div>
           </div>
           <div class="sidenav" >
-            <button class="dropdown-btn"><i class="nav-icon fas fa-th"></i>Daily task 
+            <button class="dropdown-btn"><i class="fa fa-tasks" aria-hidden="true"></i>
+              Daily task 
               <i class="fa fa-caret-down"></i>
             </button>
           <div class="dropdown-container">
@@ -116,7 +119,8 @@
         </div>
 
         <div class="sidenav" >
-          <button class="dropdown-btn"><i class="nav-icon fas fa-th"></i>Project 
+          <button class="dropdown-btn"><i class="fa fa-briefcase" aria-hidden="true"></i>
+            Project 
             <i class="fa fa-caret-down"></i>
           </button>
         <div class="dropdown-container">
@@ -128,6 +132,20 @@
 
                 
         </div>
+      </div>
+
+
+      <div class="sidenav" >
+        <button class="dropdown-btn"><i class="fa fa-flag" aria-hidden="true"></i>
+          Reporting 
+          <i class="fa fa-caret-down"></i>
+        </button>
+      <div class="dropdown-container">
+        
+        <a href="{% url 'reporting' %}">Manage reporting </a>
+        <a href="#">reporting to  </a>
+        <a href="#">reporting by</a>      
+      </div>
       </div>
         
           <style>

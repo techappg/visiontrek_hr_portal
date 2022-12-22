@@ -18,12 +18,13 @@ from django.urls import path,include
 # from django.conf import settings
 from . import settings
 from django.conf.urls.static import static
-
+from hr.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('hr.urls')),
     path('',include('account.urls')),
+    path('firebase-messaging-sw.js',showFirebaseJS,name="show_firebase_js"),
 
 ] + static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)

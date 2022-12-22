@@ -84,6 +84,7 @@ def dashboard(request):
 
 def employee_home(request):
     punch = Punch.objects.filter(user=request.user)
+    
     punch_obj = Punch.objects.filter(user=request.user).last()
     a = punch_obj.marked
     b = punch_obj.punch_out
@@ -438,3 +439,30 @@ def complete_project(request):
         'project':project_obj
     }
     return render(request,'employee/complete_project.html',context)
+
+def showFirebaseJS(request):
+    data='importScripts("https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js");' \
+         'importScripts("https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"); ' \
+         'var firebaseConfig = {' \
+         '        apiKey: "AIzaSyAa2J8MJTT0ykq6iV_oHWPSPe_9SazCNGE",' \
+         '        authDomain: "notification-1a1a5.firebaseapp.com",' \
+         '        projectId: "notification-1a1a5",' \
+         '        storageBucket: "notification-1a1a5.appspot.com",' \
+         '        messagingSenderId: "82591525914",' \
+         '        appId: "1:82591525914:web:67e40a1eaaa0d84f6475a3",' \
+         ' };' \
+         'firebase.initializeApp(firebaseConfig);' \
+         'const messaging=firebase.messaging();' \
+         'messaging.setBackgroundMessageHandler(function (payload) {' \
+         '    console.log(payload);' \
+         '    const notification=JSON.parse(payload);' \
+         '    const notificationOption={' \
+         '        body:notification.body,' \
+         '        icon:notification.icon' \
+         '    };' \
+         '    return self.registration.showNotification(payload.notification.title,notificationOption);' \
+         '});'
+
+    return HttpResponse(data,content_type="text/javascript")
+
+

@@ -9,8 +9,7 @@ urlpatterns = [
     path('hr_dashboard/',Hr_Dashboard,name='hr_dashboard'),
     path('delete_db',delete_data,name='delete_data'),
     path('delete_db_ofc',delete_data_offc,name='delete_data_offc'),
-    path('send_emp_notification',send_emp_notification,name="send_emp_notification"),
-    # path('hr_send_notification_emp',hr_send_notification_emp,name='hr_send_notification_emp'),
+
     path('edit_data',edit_data,name='edit_data'),
     path('selected',selected_data,name='selected'),
     path('rejected',reject_data,name='rejected'),

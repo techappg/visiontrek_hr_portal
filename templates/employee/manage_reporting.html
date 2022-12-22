@@ -13,7 +13,7 @@
                     <!-- general form elements -->
                     <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Apply For Leave</h3>
+                        <h3 class="card-title">Manage Report</h3>
                     </div>
                     <!-- /.card-header -->
 
@@ -42,26 +42,42 @@
                                 </div>
                                 {% endif %}
                             
-                    <form method="POST" >
+                    <form method="POST" action="{% url 'reporting' %}?id={{user.id}}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="card-body">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Reporting to </label>
+                                    <input type="text" class="form-control" id="customFile" name="title" value= {{ request.user }} disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">New Reporting to </label>
+                                    <input type="text" class="form-control" id="customFile" name="title" >
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                            
+                                <div class="form-group">
+                                <label>Reporting from</label>
+                            <input type="date" class="form-control" placeholder="Select Date" name="start_date" required="">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                            
+                                <div class="form-group">
+                                <label>Reporting till</label>
+                            <input type="date" class="form-control" placeholder="Select Date" name="start_date" required="">
+                                </div>
+                            </div>
                            
-                            <div class="form-group">
-                                <label>Leave Date </label>
-                                <input type="date" name="leave_date" id ='apply_date' class="form-control" />
-                            </div>
-
-                            <div class="form-group">
-                                <label>Leave Reason </label>
-                                <textarea name="leave_message" class="form-control" rows="6" id="message_not" placeholder="Leave Messge"></textarea>
-                            </div>
-
-
-                        </div>
+                   
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                        <button type="submit" class="btn btn-primary send_notification_btn">Apply for Leave</button>
+                    <button type="submit" class="btn btn-rounded btn-info  btn-md">Save</button>
+                        
                         </div>
 
                     </form>
@@ -74,7 +90,7 @@
                 </div>
             </div>
 
-                        
+        
         </div><!-- /.container-fluid -->
       </section>
 
@@ -82,26 +98,17 @@
 
 {% block custom_js %}
 <script>
-    $(".send_notification_btn").click(function(){
-        var aply_date=$("#apply_date").val();
-        var message=$("#message_not").val();
-        sendNotification(aply_date,message);
-    });
+    function text1() {
+        document.getElementById("mycode").classList.add("d-none");   
+        document.getElementById("mycode").classList.remove("d-block");   
+        document.getElementById('End_date').required = false; 
+    }
 
-    function sendNotification(aply_date,message){
-             $.ajax({
-              url:'http://127.0.0.1:8000/send_hr_notification/',
-              type:'POST',
-              data:{aply_date:aply_date,message:message},
-          })
-          .done(function(response){
-              if(response=="True"){
-                  alert("Message Sent");
-              }
-              else{
-                  alert("Failed to Send Message");
-              }
-          });
+    function text2() {
+        document.getElementById("mycode").classList.add("d-block"); 
+        document.getElementById("mycode").classList.remove("d-none");   
+        document.getElementById('End_date').required = true; 
     }
 </script>
 {% endblock custom_js %}
+

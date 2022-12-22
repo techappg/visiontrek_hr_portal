@@ -16,8 +16,6 @@
                         <h3 class="card-title">Add Project</h3>
                     </div>
                     <!-- /.card-header -->
-
-                    
                                 {% if messages %}
                                 <div class="form-group">
                                 <div class="col-12">
@@ -45,7 +43,7 @@
                     <form method="POST" action="{% url 'add_project' %}?id={{user.id}}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="card-body">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Project title <span class="text-red">*</span></label>
                                     <input type="text" class="form-control" id="customFile" name="title" >
