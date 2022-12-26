@@ -26,7 +26,7 @@
 <form  method="POST">
     {% csrf_token %}
   
-  {% if mark == True %}
+  {% if mark == False %}
 <button type="button" id='punch' name="punchin" value="in" class="btn btn-danger" onclick="out()" >Punchin</button>
 {% else %}
 
@@ -78,13 +78,15 @@ function out(){
   $.ajax({
     url:'http://127.0.0.1:8000/punchin/',
     type: 'POST',
-    data:date_dic
-  })
-  .done(function(response){
-  alert('done')
-      })
-    };
+    data:date_dic,
 
+   success:function(data){
+      
+      window.location = "{% url 'employee_home' %}"
+     },
+  });
+
+    }
 function punchout(){
   
   let output = document.getElementById('punch_out').value
@@ -105,14 +107,6 @@ function punchout(){
   })
 
 }
-/*    apiKey: "AIzaSyAa2J8MJTT0ykq6iV_oHWPSPe_9SazCNGE",' \
-         '        authDomain: "notification-1a1a5.firebaseapp.com",' \
-         '        projectId: "notification-1a1a5",' \
-         '        storageBucket: "notification-1a1a5.appspot.com",' \
-         '        messagingSenderId: "82591525914",' \
-         '        appId: "1:82591525914:web:67e40a1eaaa0d84f6475a3",' \
-          */
-
 
 
 </script>

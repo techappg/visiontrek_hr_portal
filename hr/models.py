@@ -73,6 +73,7 @@ class Task(models.Model):
     task_type = models.CharField(max_length=50,choices=task_choice)
     screenshot = models.ImageField( upload_to='task/',null=True,blank=True)
     detail = models.TextField()
+    create_task_date = models.DateField(auto_now_add=True)
 
 class Project(models.Model):
     title = models.CharField(max_length=100,null=True,blank=True)

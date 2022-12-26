@@ -54,7 +54,14 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">New Reporting to </label>
-                                    <input type="text" class="form-control" id="customFile" name="title" >
+                                    <select class="form-control form-select select2" data-bs-placeholder="Select User" name="user_id" >
+                              <option value="" selected>Select </option>
+                            {% for i in user %}
+                            <option value="{{i.id}}">{{i.first_name}}</option>
+                
+                            {% endfor %}
+                        
+                                        </select>
                                 </div>
                             </div>
                             <div class="col-md-12">

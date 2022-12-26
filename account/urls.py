@@ -18,7 +18,8 @@ urlpatterns = [
     path('send_hr_notification/',send_hr_notification,name='send_hr_notification'),
     path('send_emp_notification/',send_emp_notification,name='send_emp_notification'),
     path('new/',new,name='new'),
-
+    path('logout_view',logout_view,name='logout_view'),
+    path('emp_task_data/',emp_task_data,name='emp_task_data'),
 #  password reset urls
 
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),

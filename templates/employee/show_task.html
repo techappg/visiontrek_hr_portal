@@ -77,9 +77,12 @@
                                     <td>{{ i.task_type }}</td>
                                     <td>{{ i.screenshot }}</td>
                                     <td>{{ i.detail }}</td>
-
                                     <td>
-                                     {{button}}
+                                        <a href="{% url 'emp_task_data' %}?id={{i.id}}" class="btn btn-sm btn-success">View</a>
+                                        {% if i.create_task_date == date %}
+                                        <a href="#" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="#" class="btn btn-warning btn-sm text-white">Delete</a>
+                                        {% endif %}
                                     </td>
                                     <td></td>
                                 </tr>

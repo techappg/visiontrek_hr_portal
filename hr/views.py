@@ -42,7 +42,6 @@ def Empl_leave_apply(request):
         leave_report.save()
         messages.success(request, "Applied for Leave.")
         return redirect('emp_leave_apply')
-        
 
     return render(request,'employee/emp_apply_leave.html',{'leaves':leave_obj})
 
@@ -74,8 +73,12 @@ def emp_leave_reject(request, leave_id):
 
 def emp_task_view(request):
     task_obj = Task.objects.filter(user_id=request.user.id)
+    
+    date_obj = date.today()
+
     context = {
-        "task":task_obj
+        "task":task_obj,
+        'date':date_obj
     }
     return render(request,'employee/show_task.html',context)
 
@@ -109,10 +112,10 @@ def add_task(request):
         task = request.POST.get("task_val")
         file = request.FILES.get('imagesfiles')
         detail = request.POST.get("taskdetail")
-        print('hhhhhh',file)
-        task_obj = Task.objects.create(task_type=task,screenshot=file,detail=detail,user_id=request.user)
-        
-
+        a = date.today()
+        print('oyeeeeeeeeeeeeee',a)
+        task_obj = Task.objects.create(task_type=task,screenshot=file,detail=detail,user_id=request.user,create_task_date=date.today())
+    
     return render(request,'employee/add_task.html',{"choice":dict(task_choice)})
 
 def AddUser(request):
@@ -120,7 +123,6 @@ def AddUser(request):
 
     if request.method == "POST":
      
-
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
@@ -413,7 +415,6 @@ def add_project(request):
         title = request.POST.get("title")
         start_date = request.POST.get('start_date')
         status = request.POST.get('status')
-        print(status)
         detail = request.POST.get("task_details")
         
         project_obj = Project.objects.create(title=title,start_date=start_date,status=status,detail=detail,user_id=request.user)    

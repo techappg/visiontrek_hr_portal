@@ -81,78 +81,66 @@ def showFirebaseJS(request):
     return HttpResponse(data,content_type="text/javascript")
 
 def reporting(request):
+    user_obj = User.objects.all()
+    return render(request,'employee/manage_reporting.html',{'user':user_obj})
 
-    return render(request,'employee/manage_reporting.html')
+def emp_task_data(request):
+    emp_id = request.GET.get("id")
+    
+    emp_obj = Task.objects.get(id=emp_id)
+    
+    return render(request,'employee/emp_task_data.html',{'emp':emp_obj})
 
 
 
 @csrf_exempt
 def punchin(request):
-    print("helllooooo")
-    
-    date_time_obj = request.POST.get("time")
-
-    status = request.POST.get('punchin') 
-
-    
-    print('current',status)
-    print(date_time_obj)
-    time_obj = date_time_obj[16:24:1]
-    date_obj = date_time_obj[0:15]
-  
-    # a = datetime.strptime(date_obj,'%a %b %m %Y')
-    print('aaa',time_obj)
-
-    print('a',date_obj)
-  
-    datetime_object = datetime.strptime(time_obj, '%H:%M:%S')
-    # datetime_object = datetime.strptime(date_time_obj, '%a %b %m %Y %I:%p:%S %X %Z%z%f')
-    print('dateeeee',datetime_object)
-    
+    if request.method == 'POST':
+        
+        date_time_obj = request.POST.get("time")
    
-
-    punch = Punch.objects.create(punch_in=datetime_object,punch_date=date_obj, user = request.user)
-    if status == "in":
-        punch.marked = False 
-
-    punch.save()
-
-    redirect('employee_home')
+        status = request.POST.get('punchin') 
+        
     
+        time_obj = date_time_obj[16:24:1]
+        date_obj = date_time_obj[0:15]
+        # a = datetime.strptime(date_obj,'%a %b %m %Y')
+    
+        datetime_object = datetime.strptime(time_obj, '%H:%M:%S')
+        # datetime_object = datetime.strptime(date_time_obj, '%a %b %m %Y %I:%p:%S %X %Z%z%f')
+    
+        punch = Punch.objects.create(punch_in=datetime_object,punch_date=date_obj, user = request.user)
+        if status == "in":
+            punch.marked = True 
+            punch.save()
+    
+        # redirect('employee_home')
+    
+        return JsonResponse({'status':'Save'})
+    else:
+        return JsonResponse({'status':0})
 
-
-
+    
 @csrf_exempt
 def punchout(request):
-    
-    
     date_time_obj = request.POST.get("time")
-    
     status = request.POST.get('punchout') 
-
     time_obj = date_time_obj[16:24:1]
     date_obj = date_time_obj[0:15]
     # a = datetime.strptime(date_obj,'%a %b %m %Y')
-    print('aaa',time_obj)
-
-    print('a',date_obj)
-  
+   
     datetime_object = datetime.strptime(time_obj, '%H:%M:%S')
     # datetime_object = datetime.strptime(date_time_obj, '%a %b %m %Y %I:%p:%S %X %Z%z%f')
-    print('dateeeee',datetime_object)
-    print('oye',datetime_object-datetime_object)
-    
-   
+
 
     punch = Punch.objects.filter(user=request.user).last()
-    print('last',punch)
-    punch.punch_out = datetime_object
-    if status == "out":
-        punch.marked = True 
-        punch.save()
-        print(punch.marked)
-    
 
+    punch.punch_out = datetime_object
+    punch.save()
+    if status == "out":
+        punch.marked = False 
+        punch.save()
+        
     redirect('employee_home')
     
     
@@ -318,3 +306,7 @@ def send_emp_notification(request):
     
     print(data.text)
     return HttpResponse("True")
+
+def logout_view(request):    
+    logout(request)
+    return redirect('login')

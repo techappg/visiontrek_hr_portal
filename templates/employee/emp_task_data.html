@@ -1,0 +1,102 @@
+{% extends 'employee/base.html' %}
+
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Add Task</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    {% if messages %}
+                    <div class="form-group">
+                        <div class="col-12">
+                            {% for message in messages %}
+                            {% if message.tags == "error" %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                style="margin-top: 10px;">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% elif message.tags == "success" %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert"
+                                style="margin-top: 10px;">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Task Type : {{emp.Task_type}}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <h4><b>Description:</b></h4> {{emp.detail}}<p></p>
+
+                                    <p class="card-text"></p>
+                                    <h4><b>Uploaded File:</b></h4><img src="{{emp.screenshot.url}}" class="col-6">
+                                    <p></p>
+
+                                    <p class="card-text text-dark d-inline"></p>
+                                    <h4><b>added on:</b></h4>{{emp.create_task_date}}<p></p>
+
+                                </div>
+                                <div class="card-footer d-sm-flex justify-content-between align-items-center">
+                                    <a href="/hrpanel/all_task" class="btn btn-primary">Go Back</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+</section>
+{% endblock main_content %}
+
+{% block custom_js %}
+
+{% endblock custom_js %}
+<!-- <div class="col-12">
+    {% for i in data %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Task Type : {{i.Task_type}}</h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text"></p><h4><b>Description:</b></h4> {{i.Task_details}}<p></p>
+                        
+            <p class="card-text"></p><h4><b>Uploaded File:</b></h4><img src="{{i.images.url}}" class="col-6"><p></p>
+
+            <p class="card-text text-dark d-inline"></p><h4><b>added on:</b></h4>{{i.datetime}}<p></p>
+                            
+        </div>
+        <div class="card-footer d-sm-flex justify-content-between align-items-center">
+            <div class="card-footer-link mb-4 mb-sm-0">
+                {% comment %} <p class="card-text text-dark d-inline"></p><h4><b>added on:</b></h4> Nov. 23, 2022, 6:18 p.m.<p></p> {% endcomment %}
+            </div>
+            <a href="/hrpanel/all_task" class="btn btn-primary">Go Back</a>
+        </div>
+    </div>
+    {% endfor %}
+</div> -->
