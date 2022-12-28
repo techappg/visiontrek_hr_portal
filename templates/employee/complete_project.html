@@ -77,13 +77,11 @@
                                     <td>{{ i.id }}</td>
                                     <td>{{ i.title }}</td>
                                     <td>{{ i.start_date }}</td>
-                                    <td>{{ i.end_Date }}</td>
+                                    <td>{{ i.end_date }}</td>
                                     <td>{{ i.detail }}</td>
-                                    {% if i.status == True %}
-                                    <td>Active</td>
-                                    {% else %}
+                            
                                     <td>Completed </td>
-{% endif %}
+
                                 </tr>
                                 {% endfor %}
                             </table>

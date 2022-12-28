@@ -1,4 +1,4 @@
-{% extends 'employee/base.html' %}
+{% extends 'base.html' %}
 
 
 {% block main_content %}
@@ -12,7 +12,7 @@
                 <!-- general form elements -->
                 <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title"> Toal Project Below: </h3>
+                    <h3 class="card-title"> Report by: </h3>
                 </div>
                 <!-- /.card-header -->
 
@@ -54,7 +54,7 @@
             <div class="col-md-12">
                 <div class="card card-success">
                     <div class="card-header">
-                        <h3 class="card-title">Project Below</h3>
+                        <h3 class="card-title">Task History</h3>
                     </div>
 
                     <div class="card-body">
@@ -62,33 +62,34 @@
                             <table class="table">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Project Name</th>
-                                    <th>start date</th>
-                                    <th>end date</th>
-                                    <th>Details</th>
-                                    <th>status</th>
+                                    <th>Office Id</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Projects</th>
+                                    <th>Action</th>
 
                                 </tr>
                                 </thead>
                                 
-                                {% for i in project %}
+                                {% for i in emp %}
                                 <tr>
                                     <td>{{ i.id }}</td>
-                                    <td>{{ i.title }}</td>
-                                    <td>{{ i.start_date }}</td>
-                                    <td>{{ i.end_Date }}</td>
-                                    <td>{{ i.detail }}</td>
-                                
-                                    <td>Active</td>
-                        
-                            
+                                    <td>{{ i.report_by.username }}</td>
+                                    <td>{{ i.report_by.email }}</td>
+                                    <td>
+                                        <a href="{% url 'show_task_rep' %}?name={{i.report_by.username}}" class="btn btn-sm btn-primary">Daily Task</a>
+                                        <a href="{% url 'show_pjct_rep' %}?name={{i.report_by.username}}" class="btn btn-sm btn-success">Projects</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-primary">Chat</a>
+                            <a href="#" class="btn btn-sm btn-success">SEND MAIL</a>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </table>
                         </div>
                     </div>
-    </div><!-- /.container-fluid -->
+    </div>
   </section>
 
 

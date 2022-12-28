@@ -13,6 +13,7 @@ import requests
 from django.http import HttpResponse
 from . models import task_choice
 import json
+from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -136,9 +137,8 @@ def AddUser(request):
 
         
             try:
-                user = User.objects.create(username=username, password=password, email=email, first_name=first_name, last_name=last_name, user_type=3,address=address)
-                
-
+                user = User(username=username,  email=email, first_name=first_name, last_name=last_name, user_type=3,address=address)
+                user.set_password(password)
                 user_obj = User.objects.get(id=user_id)
                 user.usertype = user_obj
 
@@ -149,13 +149,13 @@ def AddUser(request):
                 user.domain = dom_obj
                 user.save()
                 messages.success(request, "User Added Successfully!")
-                return redirect('dashboard')
+                return redirect('adduser')
             except:
                 messages.error(request, "Failed to Add Student!")
-                return redirect('dashboard')
+                return redirect('adduser')
         else:
-            return redirect('add_student')
-    print(form)
+            return redirect('adduser')
+
     return render(request,'adduser.html',{"form":form})
 
 
@@ -414,28 +414,35 @@ def add_project(request):
     if request.method == "POST":
         title = request.POST.get("title")
         start_date = request.POST.get('start_date')
-        status = request.POST.get('status')
         detail = request.POST.get("task_details")
         
-        project_obj = Project.objects.create(title=title,start_date=start_date,status=status,detail=detail,user_id=request.user)    
+        project_obj = Project.objects.create(title=title,start_date=start_date,detail=detail,user_id=request.user)    
     return render(request,'employee/add_project.html')
 
 def show_project(request):
     project_obj = Project.objects.filter(user_id=request.user.id)
+    if request.method=="POST":
+        pjct_id = request.GET.get('id')
+        pjct_obj = Project.objects.get(id=pjct_id)
+        status = request.POST.get('status_id')
+        if status == "Completed":
+            pjct_obj.status = 1
+            pjct_obj.end_date = date.today()
+            pjct_obj.save()
     context = {
         "project":project_obj
     }
     return render(request,'employee/all_project.html',context)
 
 def active_project(request):
-    project_obj = Project.objects.filter(user_id=request.user.id,status=1)
+    project_obj = Project.objects.filter(user_id=request.user.id,status=0)
     context = {
         'project':project_obj
     }
     return render(request,'employee/active_project.html',context)
 
 def complete_project(request):
-    project_obj = Project.objects.filter(user_id=request.user.id,status=0)
+    project_obj = Project.objects.filter(user_id=request.user.id,status=1)
     context = {
         'project':project_obj
     }

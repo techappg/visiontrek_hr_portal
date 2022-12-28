@@ -196,7 +196,25 @@
                 </p>
               </a>
             </li>
-
+            <li class="nav-item">
+                  
+               
+              <div class="dropdown">
+                <i class="nav-icon fas fa-th"></i>
+            
+                <button class="dropbtn">Manage reporting</button>
+                <div class="dropdown-content">
+              <a href="{% url 'reporting' %}">Manage reporting </a>
+            <a href="{% url 'office_meeting' %}" >reporting to</a>
+            <a href="{% url 'report_by' %}?id={{request.user.id}}">reporting by </a>
+                
+            
+                
+                </div>
+              </div>
+             
+            </a>
+          </li>
             <li class="nav-item">
                 <a href="{{ dashboard }}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
                 <i class="nav-icon fas fa-user-graduate"></i>

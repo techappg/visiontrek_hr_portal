@@ -62,8 +62,8 @@ class Profile(models.Model):
         return self.user.username
 
 class Reporting(models.Model):
-    report_to = models.ForeignKey(User, on_delete=models.CASCADE,related_name='Reporting_to')
-    new_reporting_to = models.ForeignKey(User, on_delete=models.CASCADE,related_name='New_reporting_to')
+    report_to = models.ForeignKey(User, on_delete=models.CASCADE,related_name='Reporting_to',null=True,blank=True)
+    new_reporting_to = models.ForeignKey(User, on_delete=models.CASCADE,related_name='New_reporting_to',null=True,blank=True)
     report_from = models.DateField(auto_now=False)
     report_till = models.DateField(auto_now=False)
     report_by = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True,related_name='Reporting_by')

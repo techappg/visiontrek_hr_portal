@@ -79,6 +79,7 @@ class Project(models.Model):
     title = models.CharField(max_length=100,null=True,blank=True)
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
     start_date = models.DateField(null=True,blank=True)
+    end_date = models.DateField(null=True,blank=True)
     status = models.BooleanField(default=False,null=True,blank=True)
     detail = models.TextField(max_length=200,null=True,blank=True)
 

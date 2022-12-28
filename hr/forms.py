@@ -39,5 +39,5 @@ class AddUserForm(forms.Form):
 
     usertype = forms.ChoiceField(label="usertype", choices=user_list, widget=forms.Select(attrs={"class":"form-control"}))
     position = forms.ChoiceField(label="position", choices=pos_list, widget=forms.Select(attrs={"class":"form-control"}))
-    domain = forms.ChoiceField(label="domain", choices=user_list, widget=forms.Select(attrs={"class":"form-control"}))
+    domain = forms.ChoiceField(label="domain", choices=dom_list, widget=forms.Select(attrs={"class":"form-control"}))
     

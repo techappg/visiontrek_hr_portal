@@ -80,9 +80,6 @@ def showFirebaseJS(request):
 
     return HttpResponse(data,content_type="text/javascript")
 
-def reporting(request):
-    user_obj = User.objects.all()
-    return render(request,'employee/manage_reporting.html',{'user':user_obj})
 
 def emp_task_data(request):
     emp_id = request.GET.get("id")
@@ -310,3 +307,53 @@ def send_emp_notification(request):
 def logout_view(request):    
     logout(request)
     return redirect('login')
+
+def edit_task(request):
+    edit_id = request.GET.get("id")
+    emp_obj = Task.objects.get(id=edit_id)
+    
+    context = {
+        'task':emp_obj,
+        "choice":dict(task_choice)
+    }
+    return render(request,'employee/edit_task.html',context)
+
+def delete_task(request):
+    task_id = request.GET.get('id')
+    print('taskkkk idddddddd',task_id)
+    task_obj = Task.objects.get(id=task_id)
+    task_obj.delete()
+    return redirect('emp_task_view')
+
+def reporting(request):
+    users_obj = User.objects.all()
+    if request.method == "POST":
+        report_to = request.POST.get('report_id')
+        user_obj = User.objects.get(id=report_to)
+        a = user_obj.id
+        print('aaaaaaaaa',a)
+        reporting_from = request.POST.get('reporting_from')
+        reporting_till = request.POST.get('reporting_till')
+        report_obj = Reporting.objects.create(new_reporting_to=user_obj,report_from=reporting_from,report_till=reporting_till,report_by=request.user)
+    return render(request,'employee/manage_reporting.html',{'user':users_obj})
+
+
+def report_by(request):
+    by_id = request.GET.get("id")
+    report_obj = Reporting.objects.filter(new_reporting_to=by_id)
+    print('hhhhhhhh',report_obj)
+    return render(request,'report_by.html',{'emp':report_obj})
+
+def show_task_rep(request):
+    tsk_name = request.GET.get("name")
+    print('svbfkvbuv',tsk_name)
+    id = User.objects.get(username=tsk_name)
+    task_obj = Task.objects.filter(user_id=id)
+    return render(request,'show_task_rep.html',{'task':task_obj})
+
+def show_pjct_rep(request):
+    pjct_name = request.GET.get("name")
+    id = User.objects.get(username=pjct_name)
+
+    pjct_obj = Project.objects.filter(user_id=id)
+    return render(request,'show_pjct_rep.html',{'project':pjct_obj})

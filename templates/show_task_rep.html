@@ -1,4 +1,4 @@
-{% extends 'employee/base.html' %}
+{% extends 'base.html' %}
 
 
 {% block main_content %}
@@ -12,7 +12,7 @@
                 <!-- general form elements -->
                 <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title"> Toal Project Below: </h3>
+                    <h3 class="card-title"> Toal Task Below: </h3>
                 </div>
                 <!-- /.card-header -->
 
@@ -54,7 +54,7 @@
             <div class="col-md-12">
                 <div class="card card-success">
                     <div class="card-header">
-                        <h3 class="card-title">Project Below</h3>
+                        <h3 class="card-title">Task History</h3>
                     </div>
 
                     <div class="card-body">
@@ -63,32 +63,34 @@
                                 <thead class="thead-light">
                                 <tr>
                                     <th>ID</th>
-                                    <th>Project Name</th>
-                                    <th>start date</th>
-                                    <th>end date</th>
+                                    <th>Task Name</th>
+                                    <th>Scrennshot of task</th>
                                     <th>Details</th>
-                                    <th>status</th>
+                                    <th>Action</th>
 
                                 </tr>
                                 </thead>
                                 
-                                {% for i in project %}
+                                {% for i in task %}
                                 <tr>
                                     <td>{{ i.id }}</td>
-                                    <td>{{ i.title }}</td>
-                                    <td>{{ i.start_date }}</td>
-                                    <td>{{ i.end_Date }}</td>
+                                    <td>{{ i.task_type }}</td>
+                                    <td>{{ i.screenshot }}</td>
                                     <td>{{ i.detail }}</td>
-                                
-                                    <td>Active</td>
-                        
-                            
+                                    <td>
+                                        <a href="{% url 'emp_task_data' %}?id={{i.id}}" class="btn btn-sm btn-success">View</a>
+                                        {% if i.create_task_date == date %}
+                                        <a href="{% url 'edit_task' %}?id={{i.id}}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="{% url 'delete_task' %}?id={{i.id}}" class="btn btn-warning btn-sm text-white">Delete</a>
+                                        {% endif %}
+                                    </td>
+                                    <td></td>
                                 </tr>
                                 {% endfor %}
                             </table>
                         </div>
                     </div>
-    </div><!-- /.container-fluid -->
+    </div>
   </section>
 
 

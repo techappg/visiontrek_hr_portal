@@ -19,9 +19,14 @@ urlpatterns = [
     path('send_emp_notification/',send_emp_notification,name='send_emp_notification'),
     path('new/',new,name='new'),
     path('logout_view',logout_view,name='logout_view'),
+    path('edit_task/', edit_task, name="edit_task"),
     path('emp_task_data/',emp_task_data,name='emp_task_data'),
-#  password reset urls
+    path('delete_task/',delete_task,name='delete_task'),
+    path('report_by/',report_by,name='report_by'),
+    path('show_task_rep/',show_task_rep,name='show_task_rep'),
+    path('show_pjct_rep/',show_pjct_rep,name='show_pjct_rep'),
 
+#  password reset urls
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),
 
     path('password_reset/done/',auth_views.PasswordResetDoneView.as_view(),name='password_reset_done'),

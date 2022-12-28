@@ -13,7 +13,7 @@
                     <!-- general form elements -->
                     <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Manage Report</h3>
+                        <h3 class="card-title">Edit Task</h3>
                     </div>
                     <!-- /.card-header -->
 
@@ -42,49 +42,48 @@
                                 </div>
                                 {% endif %}
                             
-                    <form method="POST" action="{% url 'reporting' %}" enctype="multipart/form-data">
+                    <form method="POST" action="{% url 'add_task' %}?id={{user.id}}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="card-body">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Reporting to </label>
-                                    <input type="text" class="form-control" id="customFile" name="report_to" value= {{ request.user }} disabled>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">New Reporting to </label>
-                                    <select class="form-control form-select select2" data-bs-placeholder="Select User" name="report_id" >
-                              <option value="" selected>Select </option>
-                            {% for i in user %}
-                            <option value="{{i.id}}">{{i.username}}</option>
-                
-                            {% endfor %}
-                        
+                                    <label class="form-label">Select Task Type <span class="text-red">*</span></label>
+                                    <select class="form-control form-select select2" data-bs-placeholder="Select" name="task_val" >
+                                        <option value="" selected>Select task </option>
+                            
+                                        {%  for i in choice %}
+                                          <option value="{{i}}">{{i}}</option>
+                                  
+                                          {% endfor %}
+                                          
                                         </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
                             
                                 <div class="form-group">
-                                <label>Reporting from</label>
-                            <input type="date" class="form-control" placeholder="Select Date" name="reporting_from" required="">
+                                    <label class="form-label" for="customFile">Choose file</label>
+                                    
+                                    
+                                    <input type="file" class="form-control" id="customFile" name="imagesfiles" {% if task.screenshot %}value="{{ task.screenshot }}"{% else %} placeholder="Upload file" {% endif %}>
+        
+                                   
+        
                                 </div>
+                            </div>
                             </div>
                             <div class="col-md-12">
-                            
-                                <div class="form-group">
-                                <label>Reporting till</label>
-                            <input type="date" class="form-control" placeholder="Select Date" name="reporting_till" required="">
-                                </div>
-                            </div>
-                           
-                   
+
+                            <label for="task">Task Details:</label>
+
+                            <textarea id="task" name="taskdetail" 
+                    {% if task.detail %} value="{{ task.detail }}"{% else %} placeholder="Enter a task detail" {% endif %}rows="4" cols="50">{{ task.detail }}
+                            </textarea></div>
+                        </div>
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                    <button type="submit" class="btn btn-rounded btn-info  btn-md">Save</button>
-                        
+                        <button type="submit" class="btn btn-primary">Create Task</button>
                         </div>
 
                     </form>
@@ -104,18 +103,5 @@
   {% endblock main_content %}
 
 {% block custom_js %}
-<script>
-    function text1() {
-        document.getElementById("mycode").classList.add("d-none");   
-        document.getElementById("mycode").classList.remove("d-block");   
-        document.getElementById('End_date').required = false; 
-    }
 
-    function text2() {
-        document.getElementById("mycode").classList.add("d-block"); 
-        document.getElementById("mycode").classList.remove("d-none");   
-        document.getElementById('End_date').required = true; 
-    }
-</script>
 {% endblock custom_js %}
-
