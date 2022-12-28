@@ -47,10 +47,9 @@
                 <div class="form-group">
                     <label class="form-label">Domain Applied for <span class="text-red">*</span></label>
                     <select class="form-control form-select select2" data-bs-placeholder="Select" name="domain_id" >
-                        {% for dom in domain %}
-            
-                      
-                          <option value="{{ dom.id }}"{% if dom.name == users.domain_interview %} selected {% endif %} >{{ dom.name}}</option>
+                        {% for dom in domain_obj %}
+{{ dom }}
+                          <option value="{{ dom }}"{% if dom == users.domain_interview %} selected {% endif %} >{{ dom }}</option>
                   
                        
                           {% endfor %}
@@ -63,10 +62,9 @@
                     <label class="form-label">Position Applied for <span class="text-red">*</span></label>
                     <select class="form-control form-select select2" data-bs-placeholder="Select" name="position" >
                         <option selected>Select Position</option>
-                        {% for dom in pos %}
-                
-                      
-                        <option value="{{ dom.id }}"{% if dom.position == users.position %} selected {% endif %} >{{ dom.position}}</option>
+                        {% for dom in position_choices %}
+    
+                        <option value="{{ dom }}"{% if dom == users.position %} selected {% endif %} >{{ dom }}</option>
                         {% endfor %}
                           
                   
@@ -80,7 +78,7 @@
                     <select class="form-control form-select select2" data-bs-placeholder="Select Interviewer" name="interview_id" >
                         <option value="" selected>Select Interviewer</option>
             
-                        {% for dom in new_user %}
+                        {% for dom in user_obj %}
                 
                       
                         <option value="{{ dom.id }}"{% if dom.username == users.user %} selected {% endif %} >{{ dom.username}}</option>

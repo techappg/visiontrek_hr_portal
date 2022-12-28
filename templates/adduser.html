@@ -14,7 +14,7 @@
                     <!-- general form elements -->
                     <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Add Student</h3>
+                        <h3 class="card-title">Add Employee</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -49,18 +49,91 @@
                                 {% endif %}
 
                         <div class="card-body">
-                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                    
+                                        <label class="form-label">First Name <span class="text-red">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Type your first name" name="fname" required >
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name <span class="text-red">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Type your last name" name="lname" required >
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">User Name <span class="text-red">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Type User name" name="uname" required >
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Password <span class="text-red">*</span></label>
+                                        <input type="password" class="form-control" name="pwd" required>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Email address <span class="text-red">*</span></label>
+                                        <input type="email" class="form-control" placeholder="Enter your Address"  name="email" required >
+                                    </div>
+                                </div>
+                       
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">User Type  <span class="text-red">*</span></label>
+                                        <select class="form-control form-select select2" data-bs-placeholder="Select" name="user_id" >
+                                            {% for dom in user_role %}
+
+                                              <option value="{{ dom }}" >{{ dom}}</option>
+                                      
+                                           
+                                              {% endfor %}
+                                            </select>
+                                    </div>
+                                </div>
+                    
+                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Position <span class="text-red">*</span></label>
+                                        <select class="form-control form-select select2" data-bs-placeholder="Select" name="position" >
+                                            <option selected>Select Position</option>
+                                            {% for dom in position_choices %}
+                                    
+                                          
+                                            <option value="{{ dom.id }}" >{{ dom }}</option>
+                                            {% endfor %}
+                                              
+                                      
+                                            
+                                            </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Domain <span class="text-red">*</span></label>
+                                        <select class="form-control form-select select2" data-bs-placeholder="Select Interviewer" name="domain" >
+                                            <option value="" selected>Select Domain</option>
+                                
+                                            {% for dom in domain %}
+                                    
+                                          
+                                            <option value="{{ dom }}">{{ dom }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                  </div>
+                            </div>
                           
 
-                            {% for field in form %}
-                                <div class="form-group">
-
-                                    {{ field.errors }}
-                                    {{ field.label_tag }}
-                                    {{ field }}
-
-                                </div>
-                            {% endfor %%}
 
                             
 
@@ -68,9 +141,7 @@
                         </div>
                         <!-- /.card-body -->
 
-                        <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
+                       
                     </form>
                     </div>
                     <!-- /.card -->

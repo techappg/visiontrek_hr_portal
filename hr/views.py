@@ -6,7 +6,8 @@ from django.contrib import messages
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives,send_mail,EmailMessage
-from .forms import AddUserForm
+from django.contrib.auth.hashers import make_password
+
 from datetime import datetime, date
 from django.views.decorators.csrf import csrf_exempt
 import requests
@@ -14,7 +15,11 @@ from django.http import HttpResponse
 from . models import task_choice
 import json
 from django.contrib.auth.models import User
+from account.models import domain_choices,user_role,positon_choices
+from django.contrib.auth import get_user_model
+
 # Create your views here.
+User = get_user_model()
 
 
 # def status(request,id):
@@ -47,8 +52,8 @@ def Empl_leave_apply(request):
     return render(request,'employee/emp_apply_leave.html',{'leaves':leave_obj})
 
 def python_team(request,status):
-    user = Domain_name.objects.get(name=status)
-    user_obj = User.objects.filter(domain_id=user.id)
+    user_obj = User.objects.filter(domain=status)
+    
     
     return render(request,'employee/python_team.html',{'user':user_obj})
 
@@ -90,22 +95,24 @@ def employee_home(request):
     punch = Punch.objects.filter(user=request.user)
     
     punch_obj = Punch.objects.filter(user=request.user).last()
-    a = punch_obj.marked
-    b = punch_obj.punch_out
-    c = punch_obj.punch_in
-    if b!= None:
-        d =datetime.combine(date.today(), b) - datetime.combine(date.today(), c)
+    if punch_obj!= None:
+        a = punch_obj.marked
+        b = punch_obj.punch_out
+        c = punch_obj.punch_in
+        if b!= None:
+            d =datetime.combine(date.today(), b) - datetime.combine(date.today(), c)
 
-        print(d)
-    else:
-        d = None
-    context = { 
-        'punch':punch,
-        'mark':a,
-        'out':d
-    }
-    
-    return render(request,'employee/emp_dashboard.html',context)
+            print(d)
+        else:
+            d = None
+        context = { 
+            'punch':punch,
+            'mark':a,
+            'out':d
+        }
+        
+        return render(request,'employee/emp_dashboard.html',context)
+    return render(request,'employee/emp_dashboard.html')
 
 def add_task(request):
     if request.method=="POST":
@@ -120,43 +127,24 @@ def add_task(request):
     return render(request,'employee/add_task.html',{"choice":dict(task_choice)})
 
 def AddUser(request):
-    form = AddUserForm(request.POST)
-
+    context = {
+        "domain":dict(domain_choices),
+        "user_role":dict(user_role),
+        "position_choices":dict(positon_choices)
+    }
     if request.method == "POST":
-     
-        if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            address = form.cleaned_data['address']
-            user_id = form.cleaned_data['usertype']
-            pos_id = form.cleaned_data['position']
-            dom_id = form.cleaned_data['domain']
+        fname = request.POST.get("fname")
+        lname = request.POST.get("lname")
+        uname = request.POST.get("uname")
+        pswrd = request.POST.get("pwd")
+        email = request.POST.get("email")
+        utype = request.POST.get("user_id")
+        position = request.POST.get("position")
+        domain_id = request.POST.get("domain")
 
-        
-            try:
-                user = User(username=username,  email=email, first_name=first_name, last_name=last_name, user_type=3,address=address)
-                user.set_password(password)
-                user_obj = User.objects.get(id=user_id)
-                user.usertype = user_obj
-
-                pos_obj = Pos_choice.objects.get(id=pos_id)
-                user.position = pos_obj
-
-                dom_obj = Domain_name.objects.get(id=dom_id)
-                user.domain = dom_obj
-                user.save()
-                messages.success(request, "User Added Successfully!")
-                return redirect('adduser')
-            except:
-                messages.error(request, "Failed to Add Student!")
-                return redirect('adduser')
-        else:
-            return redirect('adduser')
-
-    return render(request,'adduser.html',{"form":form})
+        user_obj = User.objects.create(first_name=fname,last_name=lname,username=uname,password=make_password(pswrd),email=email,user_type=utype,position=position,domain=domain_id)
+        messages.success(request,'User Added Successfully')
+    return render(request,'adduser.html',context)
 
 
 
@@ -263,13 +251,13 @@ def hold_data(request):
 
 
 def create_meeting(request):
-    domain_obj = Domain_name.objects.all()
+    
     user_obj = User.objects.all()
-    pos_obj = Pos_choice.objects.all()
     context = {
-        "domain":domain_obj,
         "user":user_obj,
-        "pos":pos_obj,
+        "domain":dict(domain_choices),
+        "user_role":dict(user_role),
+        "position_choices":dict(positon_choices)
     }
     
     if request.method == "POST":
@@ -282,10 +270,8 @@ def create_meeting(request):
         domain_id = request.POST["domain_id"]
         mode = request.POST["mode"]
         
-        domain = Domain_name.objects.get(id=domain_id)
     
         position_id = request.POST.get("position")
-        position = Pos_choice.objects.get(id=position_id)
         phone = request.POST.get("phone")
         cv = request.FILES["file"]
         print(cv)
@@ -293,9 +279,9 @@ def create_meeting(request):
         # print(User.objects.filter(id=interviewer_id).values('email'))
         interviewer = User.objects.get(id=interviewer_id)
 
-        Subject = f'Invitation for an interview with visiontrek for position of {domain}'
+        Subject = f'Invitation for an interview with visiontrek for position of {domain_id}'
 
-        html_content = render_to_string('email.html',{'first_name':first_name,"last_name":last_name,'datetime':date,'domain':domain,'position':position})
+        html_content = render_to_string('email.html',{'first_name':first_name,"last_name":last_name,'datetime':date,'domain':domain_id,'position':position_id})
 
         msg = EmailMultiAlternatives(Subject,'text_content', 'sajal89304@gmail.com', [email])
 
@@ -308,7 +294,7 @@ def create_meeting(request):
         else:
             attempt = "1st attempt"
 
-        meeting = Interview_meeting.objects.create(first_name=first_name,last_name=last_name,mode_choice=mode,email=email,address=Address,datetime=date,domain_interview=domain,position=position,phone=phone,user_cv=cv,user=interviewer,attempt=attempt)
+        meeting = Interview_meeting.objects.create(first_name=first_name,last_name=last_name,mode_choice=mode,email=email,address=Address,datetime=date,domain_interview=domain_id,position=position_id,phone=phone,user_cv=cv,user=interviewer,attempt=attempt)
         
         messages.success(request,"Form Submit Successfully")
 
@@ -338,22 +324,16 @@ def delete_data(request):
 
 def edit_data(request):
     id = request.GET.get("id")
-    user_obj = Interview_meeting.objects.get(id=id)
-    domain_obj = Domain_name.objects.all()
-    pos_obj = Pos_choice.objects.all()
-    user = User.objects.all()
-
+    inter_obj = Interview_meeting.objects.get(id=id)
+    domain_obj = User.objects.all()
 
     context ={
-        "users":user_obj,
-        "domain":domain_obj,
-        "pos":pos_obj,
-        "new_user":user
-
+        "users":inter_obj,
+        "user_obj":domain_obj,
+        "domain_obj":dict(domain_choices),
+        "user_role":dict(user_role),
+        "position_choices":dict(positon_choices)
     }
-
-    print("context::", context)
-
     if request.method == "POST":  
               
         first_name = request.POST.get("fname")
@@ -367,18 +347,18 @@ def edit_data(request):
         Phone = request.POST.get("phone")
         cv = request.POST.get("uploadfile")
         
-        user_obj.first_name = first_name
+        inter_obj.first_name = first_name
         
-        user_obj.last_name = last_name
-        user_obj.email = email
-        user_obj.datetime = datetime
-        user_obj.phone = Phone
-        user_obj.domain_interview = domain
-        user_obj.position = position
-        user_obj.user = interviewer
-        user_obj.address = Address
-        user_obj.user_cv = cv
-        user_obj.save()
+        inter_obj.last_name = last_name
+        inter_obj.email = email
+        inter_obj.datetime = datetime
+        inter_obj.phone = Phone
+        inter_obj.domain_interview = domain
+        inter_obj.position = position
+        inter_obj.user = interviewer
+        inter_obj.address = Address
+        inter_obj.user_cv = cv
+        inter_obj.save()
         return redirect('hr_dashboard')
 
     return render(request,'edit_data.html',context)

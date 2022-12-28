@@ -134,8 +134,8 @@ STATICFILES_DIRS = [
 AUTH_USER_MODEL = "account.User"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'sajal89304@gmail.com'
-EMAIL_HOST_PASSWORD = "Pfqpvlgygsmjxabc"
+EMAIL_HOST_USER = 'visiontreak@gmail.com'
+EMAIL_HOST_PASSWORD = "anjanzbkqbtiyiqu"
 EMAIL_USE_TLS = True
 
 

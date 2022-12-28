@@ -48,7 +48,7 @@
                         <option value="" selected>Select Domain</option>
             
                         {%  for i in domain %}
-                          <option value="{{i.id}}">{{i.name}}</option>
+                          <option value="{{i}}">{{i}}</option>
                   
                           {% endfor %}
                           
@@ -61,8 +61,8 @@
                     <select class="form-control form-select select2" data-bs-placeholder="Select" name="position" >
                         <option selected>Select Position</option>
                 
-                        {%  for i in pos %}
-                          <option value="{{i.id}}">{{i.position}}</option>
+                        {%  for i in position_choices %}
+                          <option value="{{i}}">{{i}}</option>
                   
                           {% endfor %}
                         </select>
