@@ -26,11 +26,12 @@
 <form  method="POST">
     {% csrf_token %}
   
-  {% if mark == False %}
-<button type="button" id='punch' name="punchin" value="in" class="btn btn-danger" onclick="out()" >Punchin</button>
-{% else %}
-
+  {% if mark == True %}
 <button type="submit" id='punch_out' name="btn" value="out" class="btn btn-danger" onclick="punchout()" >Punchout</button>
+
+{% else %}
+<button type="button" id='punch' name="punchin" value="in" class="btn btn-danger" onclick="out()" >Punchin</button>
+
 {% endif %}
 
 
