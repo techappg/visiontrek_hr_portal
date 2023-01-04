@@ -1,9 +1,11 @@
 import json
+import requests
+
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
+from django.http import HttpResponse
 
-
-from .models import Thread, ChatMessage, User
+from account.models import Thread, ChatMessage, User
 
 
 
@@ -44,6 +46,7 @@ class ChatConsumer(AsyncConsumer):
             print('Error:: Thread id is incorrect')
 
         await self.create_chat_message(thread_obj, sent_by_user, msg)
+        await self.chat_notification(thread_obj, sent_by_user, msg)
 
         other_user_chat_room = f'user_chatroom_{send_to_id}'
         self_user = self.scope['user']
@@ -101,4 +104,38 @@ class ChatConsumer(AsyncConsumer):
 
     @database_sync_to_async
     def create_chat_message(self, thread, user, msg):
+    
         ChatMessage.objects.create(thread=thread, user=user, message=msg)
+       
+
+    
+    # def send_notification(self, event):
+    #     print("send notification")
+    #     print('hnnnn',event)
+    @database_sync_to_async
+    def chat_notification(self,thread_obj, sent_by_user, msg):
+        
+        thread = thread_obj.first_person_id
+        
+        msgg = msg
+        to_id = sent_by_user
+        to_obj = User.objects.get(id=thread)
+        token = to_obj.fcm_token
+        print(token)
+        
+        
+        fcm_api = "AAAAEzrWrBo:APA91bFb1gozb9_NNJ6XYQxfCrUsmZQIjGZDYRbInRELckVwcuK3DwFB6cP-SuWzC7a4-gYe_r1Sg9eNj6pDEsMSyZZ_C5Q4U4LDrlfST-ojxKmg1YBnBtahhRSRE8wT8rNWltfgnPag"
+        url="https://fcm.googleapis.com/fcm/send"
+        body={
+            "notification":{
+                "title":f"message from {to_id} ",
+                "body":msg,
+                "click_action": f"http://127.0.0.1:8000/chat/?name={to_id}",
+            },
+            "to":token
+        }
+        headers={"Content-Type":"application/json","Authorization":"key="+fcm_api}
+        data=requests.post(url,data=json.dumps(body),headers=headers)
+        
+        print(data.text)
+        return HttpResponse("True")

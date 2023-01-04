@@ -148,11 +148,6 @@ def punchout(request):
     else:
         return JsonResponse({'status':0})   
     
-    
-    
-
-
-
 
 def send_notification(registration_ids, message_title, message_desc):
     print("enterrree")
@@ -376,18 +371,24 @@ def show_pjct_rep(request):
 
 def chat_view(request):
     to_id = request.GET.get("name")
+    print('first',to_id)
     to_instance = User.objects.get(username=to_id)
     by_id = request.user
-
+    print('second',by_id)
     chat_create = Thread.objects.get_or_create(first_person=to_instance,second_person=by_id)
-
+    
     threads = Thread.objects.by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
+    # get_thread = ChatMessage.objects.get(thread_id=chat_create)
+    # print('dbibirvbi',get_thread)
+    # print('oyeee',threads)
     context = {
-        'Threads': chat_create,
+        'Threads': threads,
         'to_name': to_id
     }
     
 
     return render(request,'chat.html',context)
 
+def reply_chat_view(request):
 
+    return render(request,'chat.html')

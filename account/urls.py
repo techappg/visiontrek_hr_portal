@@ -26,6 +26,7 @@ urlpatterns = [
     path('show_task_rep/',show_task_rep,name='show_task_rep'),
     path('show_pjct_rep/',show_pjct_rep,name='show_pjct_rep'),
     path('chat/',chat_view,name='chat'),
+    # path('chat_notification/',chat_notification,name='chat_notification'),
 
 #  password reset urls
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),

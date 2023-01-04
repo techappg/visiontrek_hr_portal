@@ -353,14 +353,14 @@ html {
 						</div>
 					{% endfor %}
 					<div class="card-footer">
-							<form id="send-message-form">
+							<form  id="send-message-form" method="post">
 								<div class="input-group">
 									<div class="input-group-append">
 										<span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
 									</div>
-									<input type="text" name="" id="input-message" class="form-control type_msg" placeholder="Type your message...">
+									<input type="text" name="chat_msg" id="input-message" class="form-control type_msg" placeholder="Type your message...">
 									<div class="input-group-append">
-										<button class="btn btn-secondary" type="submit">
+										<button class="btn btn-secondary" name="chat_btn" type="submit" onclick="chat()">
 											<span class="input-group-text send_btn">
 												<i class="fas fa-location-arrow"></i>
 											</span>
@@ -501,6 +501,19 @@ function get_active_thread_id(){
 }
 </script>
 
+<script>
+function chat(){
+  let msg = document.getElementsByName("chat_msg");
+
+  msg_dict = {"msg":msg}
+  alert("hello")
+  $.ajax({
+    url:"http://127.0.0.1:8000/chat_notification/",
+    type: 'POST',
+    data: msg_dict,
+  })
+
+</script>
 
 
 {% endblock custom_js %}
