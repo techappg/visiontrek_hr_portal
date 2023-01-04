@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'employee/base.html' %}
 
 
 {% block main_content %}
@@ -74,14 +74,14 @@
                                 {% for i in emp %}
                                 <tr>
                                     <td>{{ i.id }}</td>
-                                    <td>{{ i.report_by.username }}</td>
-                                    <td>{{ i.report_by.email }}</td>
+                                    <td>{{ i.username }}</td>
+                                    <td>{{ i.email }}</td>
                                     <td>
-                                        <a href="{% url 'show_task_rep' %}?name={{i.report_by.username}}" class="btn btn-sm btn-primary">Daily Task</a>
-                                        <a href="{% url 'show_pjct_rep' %}?name={{i.report_by.username}}" class="btn btn-sm btn-success">Projects</a>
+                                        <a href="{% url 'show_task_rep' %}?name={{i.username}}" class="btn btn-sm btn-primary">Daily Task</a>
+                                        <a href="{% url 'show_pjct_rep' %}?name={{i.username}}" class="btn btn-sm btn-success">Projects</a>
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-sm btn-primary">Chat</a>
+                                        <a href="{% url 'chat' %}?name={{i.username}}" class="btn btn-sm btn-primary">Chat</a>
                             <a href="#" class="btn btn-sm btn-success">SEND MAIL</a>
                                     </td>
                                 </tr>

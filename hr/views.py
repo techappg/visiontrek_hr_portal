@@ -17,6 +17,7 @@ import json
 from django.contrib.auth.models import User
 from account.models import domain_choices,user_role,positon_choices
 from django.contrib.auth import get_user_model
+from datetime import timedelta
 
 # Create your views here.
 User = get_user_model()
@@ -102,7 +103,9 @@ def employee_home(request):
         if b!= None:
             d =datetime.combine(date.today(), b) - datetime.combine(date.today(), c)
 
-            print(d)
+            
+            punch_obj.hours = d
+            punch_obj.save()
         else:
             d = None
         context = { 
@@ -127,7 +130,9 @@ def add_task(request):
     return render(request,'employee/add_task.html',{"choice":dict(task_choice)})
 
 def AddUser(request):
+    user_obj = User.objects.all()
     context = {
+        "users":user_obj,
         "domain":dict(domain_choices),
         "user_role":dict(user_role),
         "position_choices":dict(positon_choices)
@@ -141,8 +146,9 @@ def AddUser(request):
         utype = request.POST.get("user_id")
         position = request.POST.get("position")
         domain_id = request.POST.get("domain")
-
-        user_obj = User.objects.create(first_name=fname,last_name=lname,username=uname,password=make_password(pswrd),email=email,user_type=utype,position=position,domain=domain_id)
+        report_to = request.POST.get("report_to")
+        phone = request.POST.get("phone")
+        user_obj = User.objects.create(first_name=fname,last_name=lname,username=uname,phone=phone,password=make_password(pswrd),email=email,user_type=utype,position=position,domain=domain_id,reporting_to=report_to)
         messages.success(request,'User Added Successfully')
     return render(request,'adduser.html',context)
 
@@ -277,7 +283,7 @@ def create_meeting(request):
         print(cv)
         interviewer_id = request.POST.get('interview_id')
         # print(User.objects.filter(id=interviewer_id).values('email'))
-        interviewer = User.objects.get(id=interviewer_id)
+        
 
         Subject = f'Invitation for an interview with visiontrek for position of {domain_id}'
 
@@ -294,7 +300,7 @@ def create_meeting(request):
         else:
             attempt = "1st attempt"
 
-        meeting = Interview_meeting.objects.create(first_name=first_name,last_name=last_name,mode_choice=mode,email=email,address=Address,datetime=date,domain_interview=domain_id,position=position_id,phone=phone,user_cv=cv,user=interviewer,attempt=attempt)
+        meeting = Interview_meeting.objects.create(first_name=first_name,last_name=last_name,mode_choice=mode,email=email,address=Address,datetime=date,domain_interview=domain_id,position=position_id,phone=phone,user_cv=cv,user=interviewer_id,attempt=attempt)
         
         messages.success(request,"Form Submit Successfully")
 

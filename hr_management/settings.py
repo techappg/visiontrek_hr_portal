@@ -27,10 +27,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -71,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'hr_management.wsgi.application'
+ASGI_APPLICATION = 'hr_management.asgi.application'
 
 
 # Database
@@ -150,3 +153,11 @@ AUTH_USER_MODEL='account.User'
 CRONJOBS = [
     ('* * * * *','account.cron.my_scedule')
 ]
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}

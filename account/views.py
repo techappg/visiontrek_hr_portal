@@ -104,6 +104,7 @@ def punchin(request):
         # a = datetime.strptime(date_obj,'%a %b %m %Y')
     
         datetime_object = datetime.strptime(time_obj, '%H:%M:%S')
+        print('hellloooooo',type(datetime_object))
         # datetime_object = datetime.strptime(date_time_obj, '%a %b %m %Y %I:%p:%S %X %Z%z%f')
     
         punch = Punch.objects.create(punch_in=datetime_object,punch_date=date_obj, user = request.user)
@@ -127,18 +128,26 @@ def punchout(request):
     # a = datetime.strptime(date_obj,'%a %b %m %Y')
    
     datetime_object = datetime.strptime(time_obj, '%H:%M:%S')
-    # datetime_object = datetime.strptime(date_time_obj, '%a %b %m %Y %I:%p:%S %X %Z%z%f')
+    print('nkvnoernvini',type(datetime_object))
+
 
 
     punch = Punch.objects.filter(user=request.user).last()
 
     punch.punch_out = datetime_object
+    a = punch.punch_out
+    b = punch.punch_in
+    print(f'helllllooooo{a}anddd{b}')
+
     punch.save()
     if status == "out":
         punch.marked = False 
         punch.save()
-        
-    redirect('employee_home')
+
+        return JsonResponse({'status':'Save'})
+    else:
+        return JsonResponse({'status':0})   
+    
     
     
 
@@ -220,7 +229,7 @@ def send_hr_notification(request):
     message=request.POST.get("message")
     print(a_date)
     print(message)
-    user_obj=User.objects.get(id=10)
+    user_obj=User.objects.get(id=1)
     a = user_obj.id
     token=user_obj.fcm_token
     print(token)
@@ -339,21 +348,46 @@ def reporting(request):
 
 
 def report_by(request):
-    by_id = request.GET.get("id")
-    report_obj = Reporting.objects.filter(new_reporting_to=by_id)
-    print('hhhhhhhh',report_obj)
-    return render(request,'report_by.html',{'emp':report_obj})
+    report_obj = User.objects.filter(reporting_to=request.user)
+    # new_reporting = Reporting.objects.filter(new_reporting = request.user)
+    
+    return render(request,'employee/report_by.html',{'emp':report_obj})
 
 def show_task_rep(request):
     tsk_name = request.GET.get("name")
-    print('svbfkvbuv',tsk_name)
+
     id = User.objects.get(username=tsk_name)
     task_obj = Task.objects.filter(user_id=id)
-    return render(request,'show_task_rep.html',{'task':task_obj})
+    return render(request,'employee/show_task_rep.html',{'task':task_obj})
 
 def show_pjct_rep(request):
     pjct_name = request.GET.get("name")
     id = User.objects.get(username=pjct_name)
 
     pjct_obj = Project.objects.filter(user_id=id)
-    return render(request,'show_pjct_rep.html',{'project':pjct_obj})
+    return render(request,'employee/show_pjct_rep.html',{'project':pjct_obj})
+
+# def reporting_to(request):
+#     todaydate=date.today()
+#     emp = User.objects.filter(reporting_by=request.user).values('Employee_code','first_name','email','id')
+#     new_report = report.objects.filter(new_reporting_to=request.user,report_from__day__lte=todaydate.day,report_till__day__gte=todaydate.day).values('reportto')
+#     NEW_REPORT = User.objects.filter(reporting_by__in=new_report).values('Employee_code','first_name','email','id')
+#     return render(request, 'reporting_to.html',locals())
+
+def chat_view(request):
+    to_id = request.GET.get("name")
+    to_instance = User.objects.get(username=to_id)
+    by_id = request.user
+
+    chat_create = Thread.objects.get_or_create(first_person=to_instance,second_person=by_id)
+
+    threads = Thread.objects.by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
+    context = {
+        'Threads': chat_create,
+        'to_name': to_id
+    }
+    
+
+    return render(request,'chat.html',context)
+
+

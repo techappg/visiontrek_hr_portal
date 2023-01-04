@@ -144,7 +144,7 @@
         
         <a href="{% url 'reporting' %}">Manage reporting </a>
         <a href="#">reporting to  </a>
-        <a href="#">reporting by</a>      
+        <a href="{% url 'report_by' %}">reporting by</a>      
       </div>
       </div>
         
@@ -228,25 +228,10 @@
             </script>
   
 
-            <li class="nav-item">
-              <div class="dropdown">
-                <i class="nav-icon fas fa-tachometer-alt"> <button class="dropbtn">Leaves</button> </i>
-                <a href="{{ dashboard }}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
-
-                  <!-- <style>
-                    .sidebar .nav-link i{
-                      margin-left: 40px;
-                      color: blue;
-                      
-                    }
-                  </style> -->
-                </a>
-              </div>
-            </li>
-
+          
             <li class="nav-item">
               <i class="fa-solid fa-gear"><button class="dropbtn">Settings</button></i>
-              <a href="{{ dashboard }}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
+              <a href="#" class="nav-link {% if request.path == admin_home %} active {% endif %}">
                 
             </a>
           </li>

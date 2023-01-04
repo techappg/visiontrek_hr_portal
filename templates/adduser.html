@@ -82,6 +82,11 @@
                                         <input type="email" class="form-control" placeholder="Enter your Address"  name="email" required >
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number <span class="text-red">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Phone Number"  name="phone" required >
+                                </div>
+                            </div>
                        
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -96,7 +101,20 @@
                                             </select>
                                     </div>
                                 </div>
-                    
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Reporting to  <span class="text-red">*</span></label>
+                                        <select class="form-control form-select select2" data-bs-placeholder="Select" name="report_to" >
+                                            {% for i in users %}
+
+                                              <option value="{{ i }}" >{{ i.username }}</option>
+                                      
+                                           
+                                              {% endfor %}
+                                            </select>
+                                    </div>
+                                </div>
+
                                  <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="form-label">Position <span class="text-red">*</span></label>
@@ -105,7 +123,7 @@
                                             {% for dom in position_choices %}
                                     
                                           
-                                            <option value="{{ dom.id }}" >{{ dom }}</option>
+                                            <option value="{{ dom }}" >{{ dom }}</option>
                                             {% endfor %}
                                               
                                       

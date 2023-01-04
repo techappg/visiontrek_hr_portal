@@ -25,6 +25,7 @@ urlpatterns = [
     path('report_by/',report_by,name='report_by'),
     path('show_task_rep/',show_task_rep,name='show_task_rep'),
     path('show_pjct_rep/',show_pjct_rep,name='show_pjct_rep'),
+    path('chat/',chat_view,name='chat'),
 
 #  password reset urls
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),

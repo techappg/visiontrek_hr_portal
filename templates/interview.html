@@ -74,7 +74,7 @@
                     <select class="form-control form-select select2" data-bs-placeholder="Select Interviewer" name="interview_id" >
                         <option value="" selected>Select Interviewer</option>
             {% for i in user%}
-            <option value="{{i.id}}">{{i.first_name}}</option>
+            <option value="{{i}}">{{i.first_name}}</option>
 
             {% endfor %}
         

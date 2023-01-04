@@ -58,7 +58,7 @@
 
   <td id="punch_in">{{i.punch_in}}</td>
   <td>{{i.punch_out}}</td>
-  <td>{{out}}</td>
+  <td>{{i.hours}}</td>
 
   </tr>
   {% endfor %}
@@ -82,7 +82,7 @@ function out(){
     data:date_dic,
 
    success:function(data){
-      
+
       window.location = "{% url 'employee_home' %}"
      },
   });
@@ -99,13 +99,14 @@ function punchout(){
   $.ajax({
     url:'http://127.0.0.1:8000/punchout/',
     type: 'POST',
-    data:date_dic
-  })
-  .done(function(response){
- 
+    data:date_dic,
+
+   success:function(data){
   
-  
+      window.location = "{% url 'employee_home' %}"
+     },
   })
+
 
 }
 
