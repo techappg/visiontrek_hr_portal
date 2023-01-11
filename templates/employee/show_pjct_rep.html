@@ -1,0 +1,166 @@
+{% extends 'employee/base.html' %}
+
+
+{% block main_content %}
+
+{% load static %}
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"> Toal Project Below: </h3>
+                </div>
+                <!-- /.card-header -->
+
+                
+                            {% if messages %}
+                            <div class="form-group">
+                            <div class="col-12">
+                                {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                {% elif message.tags == "success" %}
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            </div>
+                            {% endif %}
+                        
+              
+                </div>
+                <!-- /.card -->
+
+
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Project Below</h3>
+                    </div>
+
+                    <div class="card-body">
+                       <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Project Name</th>
+                                    <th>start date</th>
+                                    <th>end date</th>
+                                    <th>Details</th>
+                                    <th>status</th>
+                                    <th>action</th>
+
+                                </tr>
+                                </thead>
+                                
+                                {% for i in project %}
+                                <tr>
+                                    <td>{{ i.id }}</td>
+                                    <td>{{ i.title }}</td>
+                                    <td>{{ i.start_date }}</td>
+                                    <td>{{ i.end_date }}</td>
+                                    <td>{{ i.detail }}</td>
+                            
+                                    <td>{% if i.status == 1 %}Completed{% else %}Active{% endif %}</td>
+                                    <td> 
+                                        <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#exampleModal-{{i.id}}">
+                                            Show Data
+                                          </button>
+         </td>
+         <div class="modal fade" id="exampleModal-{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'show_project' %}?id={{ i.id }}">
+                        {% csrf_token %}
+                        <div class="container">
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-primary" role="alert">
+                      {{message}}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                     
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                    
+                                        <label class="form-label">Project Name <span class="text-red">*</span></label>
+                                        <input type="text" class="form-control" {% if i.title %}value="{{ i.title }}"{% else %} placeholder="Type your project name" {% endif %} name="pname"  >
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Project detais <span class="text-red">*</span></label>
+                                        <input type="text" class="form-control" {% if i.detail %}value="{{ i.detail }}"{% else %} placeholder="Type your last name" {% endif %}  name="dname"  >
+                                    </div>
+                                </div>
+                                
+                              
+                               
+                                <div class="col-3">
+                                  
+                                    <div class="form-group">
+                                        <label class="form-label">Status <span class="text-red">*</span></label>
+                                        <select class="form-control form-select select2" data-bs-placeholder="Select" name="status_id" >
+                                          <option value="Active">Active</option>
+                                          <option value="Completed">Completed</option>
+        
+                                          </select>
+        
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><br><br>
+                                          <button type="Submit" class="btn btn-primary">Save changes</button>       
+                                </div>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                    
+                </div>
+         
+              </div>
+            </div>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+    </div><!-- /.container-fluid -->
+  </section>
+ 
+
+  {% endblock main_content %}
+
+{% block custom_js %}
+
+{% endblock custom_js %}

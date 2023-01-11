@@ -29,9 +29,10 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
-    {% comment %} For Custom CSS {% endcomment %}
+  
 
     {% block custom_css %}
+   
     {% endblock custom_css %}
 
 </head>
@@ -53,10 +54,17 @@
       <ul class="navbar-nav ml-auto">
       
       <!-- Notifications Dropdown Menu -->
+  
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-          <i class="fas fa-cog"></i>
+          <div class="user-panel mt-1 pb-1 mb-1 d-flex">
+            <div class="image">
+              <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            
+          </div>
         </a>
+        
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
           
           <a href="#" class="dropdown-item">
@@ -64,7 +72,7 @@
           </a>
 
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'logout_view' %}" class="dropdown-item">
             <i class="fas fa-power-off mr-2"></i> Logout
           </a>
           <div class="dropdown-divider"></div>
@@ -76,7 +84,7 @@
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    {% include 'sidebar_template.html'  %}
+    {% include 'try.html'  %}
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -145,6 +153,22 @@
 
 {% comment %} For Custom JS {% endcomment %}
 {% block custom_js %}
+<script>
+  var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var dropdownContent = this.nextElementSibling;
+    if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+    } else {
+      dropdownContent.style.display = "block";
+    }
+  });
+}
+</script>
 {% endblock custom_js %}
 
 </body>

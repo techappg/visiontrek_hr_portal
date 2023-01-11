@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main_content %}
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="container">
         {% if messages %}
@@ -48,7 +48,7 @@
                         <option value="" selected>Select Domain</option>
             
                         {%  for i in domain %}
-                          <option value="{{i.id}}">{{i.name}}</option>
+                          <option value="{{i}}">{{i}}</option>
                   
                           {% endfor %}
                           
@@ -61,8 +61,8 @@
                     <select class="form-control form-select select2" data-bs-placeholder="Select" name="position" >
                         <option selected>Select Position</option>
                 
-                        {%  for i in pos %}
-                          <option value="{{i.id}}">{{i.position}}</option>
+                        {%  for i in position_choices %}
+                          <option value="{{i}}">{{i}}</option>
                   
                           {% endfor %}
                         </select>
@@ -74,7 +74,7 @@
                     <select class="form-control form-select select2" data-bs-placeholder="Select Interviewer" name="interview_id" >
                         <option value="" selected>Select Interviewer</option>
             {% for i in user%}
-            <option value="{{i.id}}">{{i.first_name}}</option>
+            <option value="{{i}}">{{i.first_name}}</option>
 
             {% endfor %}
         
@@ -90,18 +90,24 @@
             <div class="col-md-6" >
                 <div class="form-group">
                     <b><label class="form-label" name="mode">Interview Mode</label></b>
-                    <div class="p-t-10">
-                        <label class="form-label" >Online
-                            <input type="radio" name="mode" value="Online" required>
-                            <span class="checkmark"></span>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" value="online mode" name="mode" onclick="text(1)"  checked>
+                        <label class="form-check-label" for="flexRadioDefault1">
+                           online
                         </label>
-                        <label class="form-label" >Offline
-                            <input type="radio" name="mode" value="Offline"
-                            required>
-                            <span class="checkmark"></span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="mode" value="offline mode" onclick="text(0)" >
+                        <label class="form-check-label" for="flexRadioDefault2">
+                          offline 
                         </label>
+                      </div>
+          
+                      <div class="card-box" id='mymode'>
+                        <span class="details">Meeting LINK</span>
+                        <input value="" type="url" placeholder="Enter meeting link" name='meeting_url' >
                     </div>
-                    
+                   
                 </div>
             </div>
 
@@ -116,9 +122,10 @@
             <div class="col-sm-6 col-md-6">
                 <div class="form-group">
                     <label class="form-label">Upload CV <span class="text-red">*</span></label>
-                    <input type="file" class="form-control" placeholder="Upload cv" name="uploadfile">
+                    <input type="file" class="form-control" placeholder="Upload cv" name="file">
                 </div>
             </div>
+        
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>
@@ -127,4 +134,20 @@
 </div>
 </form>
 
+
+
 {% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+    function text(x){
+      if(x==1){ document.getElementById('mymode').style.display="block";
+    }
+      else{ document.getElementById('mymode').style.display="none";
+  }
+      
+    }
+  </script>
+
+{% endblock custom_js %}

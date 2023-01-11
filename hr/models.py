@@ -7,14 +7,20 @@ status_choices = (
     ("Selected", 'Selected'),
     ("Rejected", 'Rejected'),)
 
-
+task_choice = (
+    ("learning","learning"),
+    ("development","development"),
+    ("task","task"),
+    ("project","project"),
+    ("deployment","deployment")
+)
 
 
 class Office_meeting(models.Model):
     Meeting_Agenda=models.CharField( max_length=50)
     Description=models.TextField() 
     datetime= models.DateTimeField( auto_now=False, auto_now_add=False)
-    user = models.ManyToManyField(User, related_name='user_office_meeting' )
+    user = models.CharField(max_length=50)
     soft_delete=models.BooleanField(default=False)  #softdelete
 
     
@@ -45,4 +51,43 @@ class Interview_meeting(models.Model):
         return self.first_name
     
     
+class Punch(models.Model):
+    punch_date = models.CharField(max_length=50,null=True,blank=True)
+    punch_in = models.TimeField(auto_now=False, auto_now_add=False,null=True,blank=True)
+    punch_out = models.TimeField(auto_now=False, auto_now_add=False,null=True,blank=True)
+    hours = models.CharField(max_length=100,null=True,blank=True)
+    marked=models.BooleanField(default=False,blank=True,null=True)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
   
+class LeaveReportEmployee(models.Model):
+    id = models.AutoField(primary_key=True)
+    emp_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    leave_date = models.CharField(max_length=255)
+    leave_message = models.TextField()
+    leave_status = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Task(models.Model):
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    task_type = models.CharField(max_length=50,choices=task_choice)
+    screenshot = models.ImageField( upload_to='task/',null=True,blank=True)
+    detail = models.TextField()
+    create_task_date = models.DateField(auto_now_add=True)
+
+class Project(models.Model):
+    title = models.CharField(max_length=100,null=True,blank=True)
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    start_date = models.DateField(null=True,blank=True)
+    end_date = models.DateField(null=True,blank=True)
+    status = models.BooleanField(default=False,null=True,blank=True)
+    detail = models.TextField(max_length=200,null=True,blank=True)
+
+
+
+class NotificationEmp(models.Model):
+    emp_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    

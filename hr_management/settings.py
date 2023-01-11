@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
+from . jazmin import JAZZMIN_SETTINGS
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,16 +27,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
     'account',
     'hr'
 ]
@@ -69,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'hr_management.wsgi.application'
+ASGI_APPLICATION = 'hr_management.asgi.application'
 
 
 # Database
@@ -130,3 +135,29 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 AUTH_USER_MODEL = "account.User"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'visiontreak@gmail.com'
+EMAIL_HOST_PASSWORD = "anjanzbkqbtiyiqu"
+EMAIL_USE_TLS = True
+
+
+
+JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
+
+AUTH_USER_MODEL='account.User'
+
+
+# AUTHENTICATION_BACKENDS = ['account.EmailBackEnd.EmailBackEnd']
+
+CRONJOBS = [
+    ('* * * * *','account.cron.my_scedule')
+]
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}

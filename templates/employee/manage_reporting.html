@@ -1,0 +1,121 @@
+{% extends 'employee/base.html' %}
+
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Manage Report</h3>
+                    </div>
+                    <!-- /.card-header -->
+
+                    
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+                            
+                    <form method="POST" action="{% url 'reporting' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Reporting to </label>
+                                    <input type="text" class="form-control" id="customFile" name="report_to" value= {{ request.user }} disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">New Reporting to </label>
+                                    <select class="form-control form-select select2" data-bs-placeholder="Select User" name="report_id" >
+                              <option value="" selected>Select </option>
+                            {% for i in user %}
+                            <option value="{{i.id}}">{{i.username}}</option>
+                
+                            {% endfor %}
+                        
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                            
+                                <div class="form-group">
+                                <label>Reporting from</label>
+                            <input type="date" class="form-control" placeholder="Select Date" name="reporting_from" required="">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                            
+                                <div class="form-group">
+                                <label>Reporting till</label>
+                            <input type="date" class="form-control" placeholder="Select Date" name="reporting_till" required="">
+                                </div>
+                            </div>
+                           
+                   
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                    <button type="submit" class="btn btn-rounded btn-info  btn-md">Save</button>
+                        
+                        </div>
+
+                    </form>
+
+                    </div>
+                    <!-- /.card -->
+
+
+
+                </div>
+            </div>
+
+        
+        </div><!-- /.container-fluid -->
+      </section>
+
+  {% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    function text1() {
+        document.getElementById("mycode").classList.add("d-none");   
+        document.getElementById("mycode").classList.remove("d-block");   
+        document.getElementById('End_date').required = false; 
+    }
+
+    function text2() {
+        document.getElementById("mycode").classList.add("d-block"); 
+        document.getElementById("mycode").classList.remove("d-none");   
+        document.getElementById('End_date').required = true; 
+    }
+</script>
+{% endblock custom_js %}
+
