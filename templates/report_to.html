@@ -1,4 +1,4 @@
-{% extends 'employee/base.html' %}
+{% extends 'base.html' %}
 
 
 {% block main_content %}
@@ -63,27 +63,23 @@
                                     <th>Office Id</th>
                                     <th>Username</th>
                                     <th>Email</th>
-                                    <th>Projects</th>
-                                    <th>Action</th>
+                                    <th>Phone</th>
+                                    
 
                                 </tr>
                                 </thead>
                                 
-                                {% for i in emp %}
+                                
                                 <tr>
-                                    <td>{{ i.id }}</td>
-                                    <td>{{ i.username }}</td>
-                                    <td>{{ i.email }}</td>
+                                    <td>{{ emp.id }}</td>
+                                    <td>{{ emp.username }}</td>
+                                    <td>{{ emp.email }}</td>
                                     <td>
-                                        <a href="{% url 'show_task_rep' %}?name={{i.username}}" class="btn btn-sm btn-primary">Daily Task</a>
-                                        <a href="{% url 'show_pjct_rep' %}?name={{i.username}}" class="btn btn-sm btn-success">Projects</a>
+                                       {{ emp.phone }}
                                     </td>
-                                    <td>
-                                        <a href="{% url 'chat' %}?name={{i.username}}" class="btn btn-sm btn-primary">Chat</a>
-                            <a href="#" class="btn btn-sm btn-success">SEND MAIL</a>
-                                    </td>
+                              
                                 </tr>
-                                {% endfor %}
+                        
                             </table>
                         </div>
                     </div>
@@ -93,6 +89,3 @@
 
   {% endblock main_content %}
 
-{% block custom_js %}
-
-{% endblock custom_js %}

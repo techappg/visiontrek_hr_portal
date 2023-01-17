@@ -9,6 +9,7 @@ urlpatterns = [
     path('punchout/',punchout,name='punchout'),
     path('notifi',index,name='notifi'),
     path('emp_profile',emp_profile,name='emp_profile'),
+    path('hr_profile',hr_profile,name='hr_profile'),
     path('user_fcmtoken/',user_fcmtoken,name='user_fcmtoken'),
     path('firebase-messaging-sw.js',showFirebaseJS,name="show_firebase_js"),
     path('reporting/',reporting,name="reporting"),
@@ -19,6 +20,8 @@ urlpatterns = [
     path('send_emp_notification/',send_emp_notification,name='send_emp_notification'),
     path('new/',new,name='new'),
     path('logout_view',logout_view,name='logout_view'),
+    path('report_to',report_to,name='report_to'),
+    path('report_to_hr',report_to_hr,name='report_to_hr'),
     path('edit_task/', edit_task, name="edit_task"),
     path('emp_task_data/',emp_task_data,name='emp_task_data'),
     path('delete_task/',delete_task,name='delete_task'),
@@ -26,6 +29,7 @@ urlpatterns = [
     path('show_task_rep/',show_task_rep,name='show_task_rep'),
     path('show_pjct_rep/',show_pjct_rep,name='show_pjct_rep'),
     path('chat/',chat_view,name='chat'),
+    path('show_attendence/',show_attendence,name='show_attendence'),
     # path('chat_notification/',chat_notification,name='chat_notification'),
 
 #  password reset urls

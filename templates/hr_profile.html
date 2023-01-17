@@ -1,4 +1,4 @@
-{% extends 'employee/base.html' %}
+{% extends 'base.html' %}
 
 
 {% block main_content %}
@@ -17,7 +17,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" method="POST" action="{% url 'emp_profile' %}" enctype="multipart/form-data">
+                    <form role="form" method="POST"  enctype="multipart/form-data">
                         {% csrf_token %}
 
                         

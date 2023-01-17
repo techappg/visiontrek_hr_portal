@@ -1,0 +1,59 @@
+{% extends 'employee/base.html' %}
+{% load static %}
+
+
+{% block custom_css %}
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+
+{% endblock custom_css %}
+
+
+{% block main_content %}
+
+<h2>Time in-out </h2>
+<table>
+  <tr>
+    <th>S.no</th>
+    <th>Date</th>
+
+    <th>Time in</th>
+    <th>Time out</th>
+    <th>Total working hour</th>
+  </tr>
+{% for i in punch %}
+
+  <tr>
+
+  <td>{{i.id}}</td>
+  <td>{{i.punch_date}}</td>
+
+  <td id="punch_in">{{i.punch_in}}</td>
+  <td>{{i.punch_out}}</td>
+  <td>{{i.hours}}</td>
+
+  </tr>
+  {% endfor %}
+
+</table>
+{% endblock main_content %}
+
+{% block custom_js %}
+
+
+{% endblock custom_js %}

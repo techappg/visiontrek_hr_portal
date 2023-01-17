@@ -3,7 +3,7 @@
 {% block main_content %}
 
 <div class="row">
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-6 mt-5">
       <!-- small box -->
       <div class="small-box bg-info">
         <div class="inner">
@@ -14,11 +14,11 @@
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
         </div>
-        <a href="{% url 'home' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="{% url 'total_candidate' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-6 mt-5">
       <!-- small box -->
       <div class="small-box bg-danger">
         <div class="inner">
@@ -34,7 +34,7 @@
     </div>
     <!-- ./col -->
     
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-6 mt-5 ">
       <!-- small box -->
       <div class="small-box bg-warning">
         <div class="inner">
@@ -49,7 +49,7 @@
       </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-6 mt-5 ">
       <!-- small box -->
       <div class="small-box bg-success">
         <div class="inner">
@@ -66,165 +66,6 @@
 </div>
 
 
-    <div class="row">
-        <div class="col-sm-10 offset-1">
-          <br><br>
-         <h1 class="text-center"> Dashboard</h1>
-          <table class="pass">
-            <style>
-              .pass{
-                margin-left: 150px;
-              }
-              td, th{
-                padding: 10px;
-              }
-            </style>
-            <table class="table" >
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">city</th>
-                <th scope="col">Date and time</th>
-                <th scope="col">Domain Applied for</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Interviewer</th>
-                <th scope="col">Candidate CV</th>
-                <th scope="col">Possition applied for</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <a href="{{ my_bill.url }}">{{ my_bill.name }}</a>
-             {% for st in candidate %}
-              <tr>
-                <th scope="row">{{st.id}}</th>
-                <td>{{st.first_name}}</td>
-                <td>{{st.email}}</td>
-                <td>{{st.address}}</td>
-                <td>{{st.datetime}}</td>
-                <td>{{st.domain_interview}}</td>
-                <td>{{st.phone}}</td>
-                <td>{{st.user}}</td>
-                <td> {% if st.user_cv %}
-                  <a href="{{ st.user_cv.url }}">{{ st.first_name }}</a>
-                  {% else %} "no cv" {% endif %}</td>
-                <td>{{st.position}}</td>
-                  <td>
-    
-                    <!-- <a href="{% url 'delete_data' %}?id={{st.id}}" type="submit" class="btn btn-danger">Delete</a> -->
 
-<button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#exampleModal-{{st.id}}">
-    Show Data
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal-{{st.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form method="POST" action="{% url 'home' %}?id={{ st.id }}">
-                {% csrf_token %}
-                <div class="container">
-                    {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-primary" role="alert">
-              {{message}}
-                    </div>
-                </div>
-                {% endfor %}
-            {% endif %}
-             
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                            
-                                <label class="form-label">First Name <span class="text-red">*</span></label>
-                                <input type="text" class="form-control" {% if st.first_name %}value="{{ st.first_name }}"{% else %} placeholder="Type your first name" {% endif %} name="fname" disabled required >
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Last Name <span class="text-red">*</span></label>
-                                <input type="text" class="form-control" {% if st.last_name %}value="{{ st.last_name }}"{% else %} placeholder="Type your last name" {% endif %}  name="lname" disabled required >
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="form-label">Email address <span class="text-red">*</span></label>
-                                <input type="email" class="form-control" {% if st.email %}value="{{ st.email }}"{% else %} placeholder="Enter your Address" {% endif %}  name="Email" disabled required >
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="form-label">Date and Time <span class="text-red">*</span></label>
-                                <input type="datetime-local" class="form-control" {% if st.datetime %} value = "{{st.datetime|date:'Y-m-d'}}T{{st.datetime|time:'H:i'}}"
-                                {% else %} placeholder="Enter Date time for interview" {% endif %} name="datetime" disabled required >
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="form-label">Address <span class="text-red">*</span></label>
-                                <input type="text" class="form-control" {% if st.address %}value="{{ st.address }}"{% else %} placeholder="Enter your Address" {% endif %}  name="address"required disabled >
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Phone <span class="text-red">*</span></label>
-                                <input type="text" class="form-control" {% if st.phone %}value="{{ st.phone }}"{% else %} placeholder="Enter your Phone number" {% endif %} name="phone" disabled >
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Candidate CV <span class="text-red">*</span></label>
-                                <li>{{ candidate.user_cv.url }}</li>
-                           
-                            </div>
-                        </div>
-                        <div class="col-3">
-                          
-                            <div class="form-group">
-                                <label class="form-label">Status <span class="text-red">*</span></label>
-                                <select class="form-control form-select select2" data-bs-placeholder="Select" name="status_id" >
-                                  
-                                  <option value="Hold">Hold</option>
-                                  <option value="Selected">Selected</option>
-                                  <option value="Rejected">Rejected</option>
-
-                                  </select>
-
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><br><br>
-                                  <button type="Submit" class="btn btn-primary">Save changes</button>       
-                        </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            </form>
-            
-        </div>
- 
-      </div>
-    </div>
-  </div>
-                  
-              
-                  
-                </td>
-              </tr>
-             {% endfor %}
-            </tbody>
-          </table>
-        </div>
-       </div>
 
 {% endblock main_content %}

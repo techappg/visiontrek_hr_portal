@@ -5,4 +5,4 @@ from hr.models import *
 
 
 
-admin.site.register([User,Profile,Interview_meeting,Office_meeting,Punch,Task,LeaveReportEmployee])
+admin.site.register([User,Profile,Interview_meeting,Office_meeting,Thread,ChatMessage,Punch,Task,LeaveReportEmployee])

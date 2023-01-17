@@ -37,6 +37,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=150,null=True,blank=True)
     last_name = models.CharField(max_length=150,null=True,blank=True)
     fcm_token = models.TextField(default="",null=True,blank=True)
+    profile_pic = models.ImageField( upload_to='profile/',null=True,blank=True)
     email = models.EmailField("email address",null=True,blank=True)
     user_type = models.CharField(default="Admin", choices=user_role, max_length=10, null=True, blank=True)
     Employee_code = models.IntegerField(unique=True,null=True,blank=True)
@@ -87,6 +88,9 @@ class Thread(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = ThreadManager()
+
+
+    
     class Meta:
         unique_together = ['first_person', 'second_person']
 
@@ -97,17 +101,17 @@ class ChatMessage(models.Model):
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        channel_layer = get_channel_layer()
-        msg_obj = ChatMessage.objects.all().last()
-        data = {'count': msg_obj, 'current_txt': self.message}
+    # def save(self, *args, **kwargs):
+    #     channel_layer = get_channel_layer()
+    #     msg_obj = ChatMessage.objects.all().last()
+    #     data = {'count': msg_obj, 'current_txt': self.message}
 
-        (channel_layer.group_send)(
-            f'user_chatroom_{msg_obj.thread_id}', {
-                'type': 'send_notification',
-                'value': json.dumps(msg_obj.message)
-            }
+    #     (channel_layer.group_send)(
+    #         f'user_chatroom_{msg_obj.thread_id}', {
+    #             'type': 'send_notification',
+    #             'value': json.dumps(msg_obj.message)
+    #         }
 
-        )
+    #     )
         
-        super(ChatMessage, self).save(*args,**kwargs)
+        # super(ChatMessage, self).save(*args,**kwargs)

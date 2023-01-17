@@ -30,7 +30,7 @@ class ChatConsumer(AsyncConsumer):
         sent_by_id = received_data.get('sent_by')
         send_to_id = received_data.get('send_to')
         thread_id = received_data.get('thread_id')
-
+        print('thread_idddd',thread_id)
         if not msg:
             print('Error:: empty message')
             return False
@@ -38,6 +38,8 @@ class ChatConsumer(AsyncConsumer):
         sent_by_user = await self.get_user_object(sent_by_id)
         send_to_user = await self.get_user_object(send_to_id)
         thread_obj = await self.get_thread(thread_id)
+
+        print("sdhds",send_to_user.id)
         if not sent_by_user:
             print('Error:: sent by user is incorrect')
         if not send_to_user:
@@ -45,7 +47,7 @@ class ChatConsumer(AsyncConsumer):
         if not thread_obj:
             print('Error:: Thread id is incorrect')
 
-        await self.create_chat_message(thread_obj, sent_by_user, msg)
+        await self.create_chat_message(thread_obj.id, sent_by_user.id, msg)
         await self.chat_notification(thread_obj, sent_by_user, msg)
 
         other_user_chat_room = f'user_chatroom_{send_to_id}'
@@ -104,8 +106,9 @@ class ChatConsumer(AsyncConsumer):
 
     @database_sync_to_async
     def create_chat_message(self, thread, user, msg):
-    
-        ChatMessage.objects.create(thread=thread, user=user, message=msg)
+        print('beforeeeeee',thread,user,msg)
+        chat = ChatMessage.objects.create(thread_id=thread, user_id=user, message=msg)
+        print('sfvbbrb',chat)
        
 
     

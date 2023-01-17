@@ -300,14 +300,19 @@ html {
 												<span>Chat with {{ to_name }}</span>
 								
 											
-										
+										{{ thread.first_person}}
+										{{ thread.second_person}}
 
 										<p>{{ thread.chatmessage_thread.all.count }} messages</p>
 									</div>
 									<div class="video_cam">
 										<span><i class="fas fa-video"></i></span>
-										<span><i class="fas fa-phone"></i></span>
+										<span>
+                  <a href="skype:+91{{ phone }}"> <i class="fas fa-phone"></i>
+                  </a>
+                    </i></span>
 									</div>
+
 								</div>
 								<span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
 								<div class="action_menu">
@@ -403,6 +408,13 @@ socket.onopen = async function(e){
         let message = input_message.val()
         let send_to = get_active_other_user_id()
         let thread_id = get_active_thread_id()
+
+
+
+
+
+
+        
 
         let data = {
             'message': message,

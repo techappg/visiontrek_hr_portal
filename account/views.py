@@ -9,39 +9,101 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import json
 from datetime import datetime
 from django.utils.timezone import timedelta
+from django.views.generic.edit import UpdateView  
+from django.views import View
 import requests
+from django.contrib.auth.hashers import make_password
+
 from . models import *
+from django.shortcuts import get_object_or_404
+
 def doLogin(request):
-    if request.method == "POST":
-     
-        user = EmailBackEnd.authenticate(request, username=request.POST.get('email'), password=request.POST.get('password'))
-        print(user)
-        if user:
-            login(request, user)
-            user_type = user.user_type
-            print(user_type)
-            # return redirect('dashboard')
-            #return HttpResponse("Email: "+request.POST.get('email')+ " Password: "+request.POST.get('password'))
-            if user_type == '1':
-                return redirect('hr_dashboard')
-                
-            else :
-                # return HttpResponse("Staff Login")
-                return redirect('employee_home')
-                
-         
-            # else:
-            #     messages.error(request, "Invalid Login!")
-            #     return redirect('login')
-        else:
-            messages.error(request, "Invalid Login Credentials!")
-            #return HttpResponseRedirect("/")
-            return redirect('login')
-    return render(request,'login.html')
+    try:
+        if request.method == "POST":
+        
+            user = EmailBackEnd.authenticate(request, username=request.POST.get('email'), password=request.POST.get('password'))
+            print(user)
+            if user:
+                login(request, user)
+                user_type = user.user_type
+                print(user_type)
+                # return redirect('dashboard')
+                #return HttpResponse("Email: "+request.POST.get('email')+ " Password: "+request.POST.get('password'))
+                if user_type == '1':
+                    return redirect('hr_dashboard')
+                    
+                else :
+                    # return HttpResponse("Staff Login")
+                    return redirect('employee_home')
+                    
+            
+                # else:
+                #     messages.error(request, "Invalid Login!")
+                #     return redirect('login')
+            else:
+                messages.error(request, "Invalid Login Credentials!")
+                #return HttpResponseRedirect("/")
+                return redirect('login')
+        return render(request,'login.html')
+    except:
+        return render(request,'login.html')
+
+
+def hr_profile(request):
+    try:
+        user_id = request.user.id
+        user_obj = User.objects.get(id=user_id)
+        context = {
+            'user':user_obj
+        }
+        if request.method == "POST":
+            profile_pic = request.FILES['profile_pic']
+            first_name = request.POST.get("first_name")
+            last_name = request.POST.get("last_name")
+            address = request.POST.get("address")
+            password = request.POST.get("password")
+            print('passsword',password)
+            user_obj.first_name = first_name
+            user_obj.last_name = last_name
+            user_obj.address = address
+            user_obj.profile_pic = profile_pic
+            if password:
+                user_obj.password = make_password(password)
+            user_obj.save()
+            messages.success(request,"profile update successfully")
+        return render(request,'hr_profile.html')
+    except:
+        messages.error(request, "profile not updated")
+        return render(request,'hr_profile.html')
+
 
 def emp_profile(request):
+    try:
+        user_id = request.user.id
+        user_obj = User.objects.get(id=user_id)
+        context = {
+            'user':user_obj
+        }
+        if request.method == "POST":
+            profile_pic = request.FILES['profile_pic']
+            first_name = request.POST.get("first_name")
+            last_name = request.POST.get("last_name")
+            address = request.POST.get("address")
+            password = request.POST.get("password")
+            print('passsword',password)
+            user_obj.first_name = first_name
+            user_obj.last_name = last_name
+            user_obj.address = address
+            user_obj.profile_pic = profile_pic
+            if password:
+                user_obj.password = make_password(password)
+            user_obj.save()
+            messages.success(request,"profile update successfully")
+        return render(request,'employee/emp_profile.html')
+    except:
+        messages.error(request, "profile not updated")
+        return render(request,'employee/emp_profile.html')
 
-    return render(request,'employee/emp_profile.html')
 
 @csrf_exempt
 def user_fcmtoken(request):
@@ -82,11 +144,16 @@ def showFirebaseJS(request):
 
 
 def emp_task_data(request):
-    emp_id = request.GET.get("id")
-    
-    emp_obj = Task.objects.get(id=emp_id)
-    
-    return render(request,'employee/emp_task_data.html',{'emp':emp_obj})
+    try:
+        emp_id = request.GET.get("id")
+        
+        emp_obj = Task.objects.get(id=emp_id)
+        
+        return render(request,'employee/emp_task_data.html',{'emp':emp_obj})
+    except:
+        messages.error(request, "Error occur")
+        return render(request,'employee/emp_task_data.html')
+
 
 
 
@@ -313,82 +380,127 @@ def logout_view(request):
     return redirect('login')
 
 def edit_task(request):
-    edit_id = request.GET.get("id")
-    emp_obj = Task.objects.get(id=edit_id)
-    
-    context = {
-        'task':emp_obj,
-        "choice":dict(task_choice)
-    }
-    return render(request,'employee/edit_task.html',context)
+    try:
+        edit_id = request.GET.get("id")
+        emp_obj = Task.objects.get(id=edit_id)
+        
+        context = {
+            'task':emp_obj,
+            "choice":dict(task_choice)
+        }
+        messages.success(request,"Edit task successfully")
+        return render(request,'employee/edit_task.html',context)
+    except:
+        messages.error(request, "task not update!!")
+        return render(request,'employee/edit_task.html')
+
 
 def delete_task(request):
-    task_id = request.GET.get('id')
-    print('taskkkk idddddddd',task_id)
-    task_obj = Task.objects.get(id=task_id)
-    task_obj.delete()
-    return redirect('emp_task_view')
+    try:
+        task_id = request.GET.get('id')
+        print('taskkkk idddddddd',task_id)
+        task_obj = Task.objects.get(id=task_id)
+        task_obj.delete()
+        messages.success(request,"Delete task successfully")
+
+        return redirect('emp_task_view')
+    except:
+        messages.error(request, "task not deleted")
+        return redirect('emp_task_view')
+
 
 def reporting(request):
-    users_obj = User.objects.all()
-    if request.method == "POST":
-        report_to = request.POST.get('report_id')
-        user_obj = User.objects.get(id=report_to)
-        a = user_obj.id
-        print('aaaaaaaaa',a)
-        reporting_from = request.POST.get('reporting_from')
-        reporting_till = request.POST.get('reporting_till')
-        report_obj = Reporting.objects.create(new_reporting_to=user_obj,report_from=reporting_from,report_till=reporting_till,report_by=request.user)
-    return render(request,'employee/manage_reporting.html',{'user':users_obj})
+    try:
+        users_obj = User.objects.all()
+        if request.method == "POST":
+            report_to = request.POST.get('report_id')
+            user_obj = User.objects.get(id=report_to)
+            a = user_obj.id
+            print('aaaaaaaaa',a)
+            reporting_from = request.POST.get('reporting_from')
+            reporting_till = request.POST.get('reporting_till')
+            report_obj = Reporting.objects.create(new_reporting_to=user_obj,report_from=reporting_from,report_till=reporting_till,report_by=request.user)
+        return render(request,'employee/manage_reporting.html',{'user':users_obj})
+    except:
+        messages.error(request, "error occur")
+        return render(request,'employee/manage_reporting.html')
 
+
+def report_to(request):
+    try:
+        user_obj = User.objects.get(id=request.user.id)
+        report_to_user = user_obj.reporting_to
+        emp = User.objects.get(username=report_to_user)
+        return render(request,'employee/report_to.html',{'emp':emp})
+    except:
+        messages.error(request, "error occur")
+        return render(request,'employee/report_to.html')
 
 def report_by(request):
-    report_obj = User.objects.filter(reporting_to=request.user)
-    # new_reporting = Reporting.objects.filter(new_reporting = request.user)
+    try:
+        report_obj = User.objects.filter(reporting_to=request.user)
     
-    return render(request,'employee/report_by.html',{'emp':report_obj})
+        return render(request,'employee/report_by.html',{'emp':report_obj})
+    except:
+        messages.error(request, "error occur")
+        return render(request,'employee/report_by.html')
+
 
 def show_task_rep(request):
-    tsk_name = request.GET.get("name")
+    try:
+        tsk_name = request.GET.get("name")
+        id = User.objects.get(username=tsk_name)
+        task_obj = Task.objects.filter(user_id=id)
+        return render(request,'employee/show_task_rep.html',{'task':task_obj})
+    except:
+        messages.error(request, "error occur")
+        return render(request,'employee/show_task_rep.html')
 
-    id = User.objects.get(username=tsk_name)
-    task_obj = Task.objects.filter(user_id=id)
-    return render(request,'employee/show_task_rep.html',{'task':task_obj})
 
 def show_pjct_rep(request):
-    pjct_name = request.GET.get("name")
-    id = User.objects.get(username=pjct_name)
+    try:
+        pjct_name = request.GET.get("name")
+        id = User.objects.get(username=pjct_name)
 
-    pjct_obj = Project.objects.filter(user_id=id)
-    return render(request,'employee/show_pjct_rep.html',{'project':pjct_obj})
+        pjct_obj = Project.objects.filter(user_id=id)
+        return render(request,'employee/show_pjct_rep.html',{'project':pjct_obj})
+    except:
+        messages.error(request, "error occur")
+        return render(request,'employee/show_pjct_rep.html')
 
-# def reporting_to(request):
-#     todaydate=date.today()
-#     emp = User.objects.filter(reporting_by=request.user).values('Employee_code','first_name','email','id')
-#     new_report = report.objects.filter(new_reporting_to=request.user,report_from__day__lte=todaydate.day,report_till__day__gte=todaydate.day).values('reportto')
-#     NEW_REPORT = User.objects.filter(reporting_by__in=new_report).values('Employee_code','first_name','email','id')
-#     return render(request, 'reporting_to.html',locals())
 
 def chat_view(request):
     to_id = request.GET.get("name")
-    print('first',to_id)
+    user_obj = User.objects.get(username=to_id)
+    print('phone',user_obj.phone)
+    phone = user_obj.phone
+    if phone is None:
+        phone = 9999999999
     to_instance = User.objects.get(username=to_id)
     by_id = request.user
-    print('second',by_id)
-    chat_create = Thread.objects.get_or_create(first_person=to_instance,second_person=by_id)
+    chat_create=Thread.objects.filter(Q(first_person=to_instance,second_person=by_id)|Q(first_person=by_id,second_person=to_instance))
+
+    if chat_create:
+
+        for i in chat_create:
+            threads = Thread.objects.filter(id=i.id)
+        
+        context = {
+            'Threads': threads,
+            'to_name': to_id,
+            'phone': phone
+        }
+        return render(request,'chat.html',context)
+    else:
+
+        chat_create = Thread.objects.create(first_person=to_instance,second_person=by_id)  
+        threads= Thread.objects.filter(id=chat_create.id)
+        
     
-    threads = Thread.objects.by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
-    # get_thread = ChatMessage.objects.get(thread_id=chat_create)
-    # print('dbibirvbi',get_thread)
-    # print('oyeee',threads)
-    context = {
-        'Threads': threads,
-        'to_name': to_id
-    }
-    
+        context = {
+            'Threads': threads,
+            'to_name': to_id
+        } 
 
-    return render(request,'chat.html',context)
+    return render(request,'chat.html',locals())
 
-def reply_chat_view(request):
-
-    return render(request,'chat.html')
