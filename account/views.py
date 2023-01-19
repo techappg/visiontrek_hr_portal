@@ -504,3 +504,16 @@ def chat_view(request):
 
     return render(request,'chat.html',locals())
 
+def start_timer(request):
+    deadline = datetime.datetime.now() + datetime.timedelta(minutes=540)
+    remaining_time = deadline - datetime.datetime.now()
+    timer = CountdownTimer.objects.create(deadline=deadline, remaining_time=remaining_time)
+    timer.save()
+    return render(request, 'employee/emp_dashboard.html', {'timer': timer})
+
+def update_timer(request):
+    timer = CountdownTimer.objects.get(id=1)
+    remaining_time = timer.deadline - datetime.datetime.now()
+    timer.remaining_time = remaining_time
+    timer.save()
+    return render(request, 'employee/emp_dashboard.html', {'timer': timer})

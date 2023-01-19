@@ -101,17 +101,7 @@ class ChatMessage(models.Model):
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    # def save(self, *args, **kwargs):
-    #     channel_layer = get_channel_layer()
-    #     msg_obj = ChatMessage.objects.all().last()
-    #     data = {'count': msg_obj, 'current_txt': self.message}
-
-    #     (channel_layer.group_send)(
-    #         f'user_chatroom_{msg_obj.thread_id}', {
-    #             'type': 'send_notification',
-    #             'value': json.dumps(msg_obj.message)
-    #         }
-
-    #     )
-        
-        # super(ChatMessage, self).save(*args,**kwargs)
+class CountdownTimer(models.Model):
+    user = models.ForeignKey(User,null=True,blank=True, on_delete=models.CASCADE)
+    deadline = models.DateTimeField()
+    remaining_time = models.IntegerField()
